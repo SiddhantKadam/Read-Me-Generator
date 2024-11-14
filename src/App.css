@@ -1,5 +1,12 @@
 .App {
-  min-height: 100vh;
+  /* height: 100vh; */
+  /* padding: 30px;  */
+
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .background-video {
@@ -10,4 +17,11 @@
   height: 100%;
   object-fit: cover;
   z-index: -1;
+}
+
+.centered-form {
+  z-index: 1; /* Ensures the form appears above the video */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
