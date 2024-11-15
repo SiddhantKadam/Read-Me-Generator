@@ -285,6 +285,11 @@ const Form = () => {
                 </li>
             </ul>
 
+            <div className="flex justify-center items-center">
+                <button className="primary-button flex px-3 py-2 mt-5 font-semibold">
+                Select the template <img src={`../icons/next.png`} className="w-5 h-5 ml-2 mt-1" /> 
+                </button>
+            </div>
 
         </Card>
 
