@@ -1,6 +1,6 @@
 .App {
   /* height: 100vh; */
-  /* padding: 30px;  */
+  padding: 0 30px; 
 
   position: relative;
   height: 100vh;
@@ -20,7 +20,7 @@
 }
 
 .centered-form {
-  z-index: 1; /* Ensures the form appears above the video */
+  /* z-index: 1; */
   display: flex;
   justify-content: center;
   align-items: center;
