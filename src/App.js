@@ -12,7 +12,7 @@ function App() {
           <source src={`../background.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="centered-form">
+        <div className="centered-form w-full">
           <Card>
             <Routes>
               <Route path="/" element={<Form />} />

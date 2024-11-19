@@ -9,6 +9,7 @@
     height: 90vh;
     overflow: auto;
     padding: 30px;
+    width: 100%;
 }
 
 /* Scrollbar */
