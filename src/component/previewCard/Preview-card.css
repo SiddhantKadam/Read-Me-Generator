@@ -157,3 +157,10 @@
         font-size: 16px;
     }
 }
+
+.thumbnail-preview {
+    width: 400px;
+    position: absolute;
+    top: 0;
+    left: 20%;
+}

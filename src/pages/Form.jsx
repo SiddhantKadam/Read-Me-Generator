@@ -35,6 +35,7 @@ const Form = () => {
         name: "",
         title: "",
         workTitle: "",
+        aboutMe: "",
         currentProjectName: "",
         currentProjectLink: "",
         currentProjectDecription: "",
@@ -69,8 +70,8 @@ const Form = () => {
     const navigate = useNavigate();
 
     const saveData = (e) => {
-        console.log(formData);
         e.preventDefault();
+        localStorage.setItem("formData", JSON.stringify(formData));
         navigate('/preview');
     };
 
@@ -97,10 +98,9 @@ const Form = () => {
                 return { ...prevData, selectedAddOns: updatedAddOns };
             }
 
-            return { ...prevData, [name]: value }; // Handle other inputs
+            return { ...prevData, [name]: value };
         });
     };
-
 
     return (
         <form onSubmit={saveData}>
@@ -113,18 +113,23 @@ const Form = () => {
             <hr />
 
             <div className="grid grid-cols-2 gap-1 mt-3">
-                <div className="grid grid-cols-3 gap-1">
+                <div className="grid grid-cols-3">
                     <div>
                         <TextBox icon="right-arrow.png" placeholder="Enter your title" name={"title"} value={formData.title} onChange={handleChange} />
                     </div>
                     <div className="col-span-2">
                         <TextBox icon="user.png" placeholder="Enter your name" name={"name"} value={formData.name} onChange={handleChange} />
                     </div>
+                    <div className="col-span-3">
+                        <TextBox icon="search.png" placeholder="Enter your work title" name={"workTitle"} value={formData.workTitle} onChange={handleChange} />
+                    </div>
                 </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-1">
-                <TextBox icon="search.png" placeholder="Enter your work title" name={"workTitle"} value={formData.workTitle} onChange={handleChange} />
+                <div className="flex mt-3 mb-4" style={{ borderBottom: "2px solid #81fdff" }}>
+                    <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                        <img src="../icons/user.png" className="w-10 h-10" />
+                    </span>
+                    <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="aboutMe" value={formData.aboutMe} rows="6" cols="60" placeholder="About me..." onChange={handleChange}></textarea>
+                </div>
             </div>
 
             <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">About myself</h6>

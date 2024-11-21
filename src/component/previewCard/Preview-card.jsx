@@ -1,8 +1,11 @@
 import React from "react";
 import "./Preview-card.css";
 import Aurora from "../templates/aurora/aurora";
+import { useNavigate } from 'react-router-dom';
 
-const PreviewCard = ({ children, heading }) => {
+const PreviewCard = ({ heading, thumbnail }) => {
+
+    // Modal
     const [isModalOpen, setIsModalOpen] = React.useState(false);
 
     const openModal = () => {
@@ -13,14 +16,22 @@ const PreviewCard = ({ children, heading }) => {
         setIsModalOpen(false);
     };
 
+    // Navigate to generate
+    const navigate = useNavigate();
+
+    const handleGenerateTemplate = () => {
+        navigate('/generate', { state: { heading: heading } });
+    };
+
     return (
         <div className="ag-courses_item">
             <a href="#" className="ag-courses-item_link">
                 <div className="ag-courses-item_bg"></div>
-
                 <div className="ag-courses-item_title">
                     {heading}
                 </div>
+
+                <img className="thumbnail-preview" src={thumbnail} />
 
                 <div className="ag-courses-item_date-box">
                     <button
@@ -34,7 +45,7 @@ const PreviewCard = ({ children, heading }) => {
                         />
                         Preview
                     </button>
-                    <button className="primary-button flex pr-6 pl-3 py-2 font-semibold mt-3 w-32">
+                    <button className="primary-button flex pr-6 pl-3 py-2 font-semibold mt-3 w-32" onClick={handleGenerateTemplate}>
                         <img
                             src={`../icons/touchscreen.png`}
                             className="w-5 h-5 mr-2 mt-1"
@@ -48,7 +59,7 @@ const PreviewCard = ({ children, heading }) => {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
-                    <div className="rounded-lg shadow-lg w-full max-w-5xl p-8" style={{backgroundColor: "#0d1117"}}>
+                    <div className="rounded-lg shadow-lg w-full max-w-5xl p-8" style={{ backgroundColor: "#0d1117" }}>
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-semibold">{heading}</h2>
                             <button

@@ -9,17 +9,11 @@ const Form = () => {
       <div className="grid grid-cols-4 gap-4 mt-4">
         <div className="col-span-3 ...">
 
-          <PreviewCard heading="Aurora">
-            <h1>Hello there</h1>
-          </PreviewCard>
+          <PreviewCard heading="Aurora" thumbnail={"../images/template-1.png"} />
 
-          <PreviewCard heading="Lumos">
-            <h1>Hello there</h1>
-          </PreviewCard>
+          <PreviewCard heading="Lumos" thumbnail={"../images/template-1.png"} />
 
-          <PreviewCard heading={"Ethereal"}>
-            <h1>Hello there</h1>
-          </PreviewCard>
+          <PreviewCard heading={"Ethereal"} thumbnail={"../images/template-1.png"} />
         </div>
         <div>
           <img src="../images/freepik__modern-style-detailled-illustration-a-teen-girl-is__20119.jpeg" />

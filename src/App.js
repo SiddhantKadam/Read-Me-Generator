@@ -2,6 +2,7 @@ import './App.css';
 import Form from './pages/Form.jsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Preview from './pages/Preview';
+import Generate from './pages/Generate.jsx';
 import Card from './component/card/Card.jsx';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Form />} />
               <Route path="/preview" element={<Preview />} />
+              <Route path="/generate" element={<Generate />} />
             </Routes>
           </Card>
         </div>
