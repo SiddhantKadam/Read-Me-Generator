@@ -6,9 +6,9 @@ import IconCheckbox from "../component/iconCheckbox/Icon-checkbox.jsx"
 const allSkills = [{
     title: "Programming Languages",
     array: [
-        { id: 'c', label: 'C', icon: '../icons/C_Language.png' },
-        { id: 'cplus', label: 'C++', icon: '../icons/C_Plus.png' },
-        { id: 'csharp', label: 'C#', icon: '../icons/c-sharp.png' }
+        { id: 'c', label: 'C', icon: '../icons/c.png' },
+        { id: 'cplus', label: 'C++', icon: '../icons/cplus.png' },
+        { id: 'csharp', label: 'C#', icon: '../icons/csharp.png' }
     ]
 },
 {
@@ -25,8 +25,7 @@ const addOns = [
     { id: 'trophy', label: 'Display github trophy' },
     { id: 'stats', label: 'Display github profile stats card' },
     { id: 'skills', label: 'Highlight top skills' },
-    { id: 'streak', label: 'Showcase GitHub streak statistics' },
-    { id: 'twitter', label: 'Showcase Twitter handle badge' },
+    { id: 'streak', label: 'Showcase GitHub streak statistics' }
 ];
 
 const Form = () => {
@@ -44,26 +43,29 @@ const Form = () => {
         interestedProjectDescription: "",
         learningSkills: "",
         skilledIn: "",
+
         email: "",
+        twitter: "",
+        facebook: "",
+        instagram: "",
+        youTube: "",
+
         articles: "",
         portfolio: "",
         resume: "",
 
         selectedSkills: [],
         selectedAddOns: [],
+
         gitHub: "",
-        twitter: "",
+        linkdin: "",
         medium: "",
         codepen: "",
-        linkdin: "",
         devTo: "",
         codeSandBox: "",
         stackOverflow: "",
         leetCode: "",
         behance: "",
-        facebook: "",
-        instagram: "",
-        youTube: "",
         discord: "",
     });
 
