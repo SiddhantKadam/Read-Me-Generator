@@ -6,7 +6,7 @@ const Aurora = () => {
 
     return (
         `<div>
-            <h1>I'm ${formData.title ? formData.title : ""} ${formData.name ? formData.name : ""}, a ${formData.workTitle ? formData.workTitle : ""} </h1>
+            <h1>I'm ${formData.title ? formData.title : ""} ${formData.name ? formData.name : ""}, ${formData.workTitle ? formData.workTitle : ""} </h1>
             ${formData.selectedAddOns.includes("count") && `<img src="https://komarev.com/ghpvc/?username=${formData.gitHub}&style=for-the-badge&label=Profile%20Views&labelColor=black&color=red" align="right" />`}
 
             <p style="color: red;">${formData.aboutMe ? formData.aboutMe : ""}</p>
