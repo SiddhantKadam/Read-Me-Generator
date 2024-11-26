@@ -30,10 +30,10 @@ const PreviewCard = ({ heading, thumbnail }) => {
                 <div className="ag-courses-item_title">
                     {heading}
                 </div>
+                <hr />
+                <img className="mt-3" src={thumbnail} />
 
-                <img className="thumbnail-preview" src={thumbnail} />
-
-                <div className="ag-courses-item_date-box">
+                <div className="flex ag-courses-item_date-box mt-4">
                     <button
                         onClick={openModal}
                         className="primary-button flex pr-6 pl-3 py-2 font-semibold w-32"
@@ -45,7 +45,7 @@ const PreviewCard = ({ heading, thumbnail }) => {
                         />
                         Preview
                     </button>
-                    <button className="primary-button flex pr-6 pl-3 py-2 font-semibold mt-3 w-32" onClick={handleGenerateTemplate}>
+                    <button className="primary-button flex pr-6 pl-3 py-2 mx-4 font-semibold w-32" onClick={handleGenerateTemplate}>
                         <img
                             src={`../icons/touchscreen.png`}
                             className="w-5 h-5 mr-2 mt-1"
