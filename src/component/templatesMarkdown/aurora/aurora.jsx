@@ -3,6 +3,7 @@ import "./aurora.css"
 const Aurora = () => {
     const storedData = localStorage.getItem("formData");
     const formData = storedData ? JSON.parse(storedData) : {};
+    const extractedWord = "";
 
     return (
         `<div>
@@ -20,7 +21,7 @@ const Aurora = () => {
             ${formData.facebook ? `<a href=https://www.facebook.com/${formData.facebook} target="blank"><img src="https://img.shields.io/badge/Facebook-%23316FF6?style=for-the-badge&logo=facebook&logoColor=white" /></a>` : ""}
             </p> ` : ""}
 
-            ${formData.selectedAddOns.includes("trophy") ? `<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=siddhantkadam" alt="siddhantkadam" /></a> </p> ` : "" }
+            ${formData.selectedAddOns.includes("trophy") ? `<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=siddhantkadam" alt="siddhantkadam" /></a> </p> ` : ""}
 
             <hr />
 
@@ -94,8 +95,9 @@ const Aurora = () => {
             <h3 align="left">Languages and Tools:</h3>
             <p align="left">  
             ${formData.selectedSkills.map((skill) => (
-            `<img src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/${skill}.png?raw=true" alt="${skill}" width="40" height="40" />`
-        ))}
+                `<img src="https://raw.githubusercontent.com/devicons/devicon/ca28c779441053191ff11710fe24a9e6c23690d6/icons/${skill.split('-')[0]}/${skill}.svg" alt="${skill}" width="40" height="40" style="" />`
+             )).join('')
+            }
             </p>
             <hr />
 

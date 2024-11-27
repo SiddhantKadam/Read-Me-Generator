@@ -1,7 +1,7 @@
 import React from "react"
 import PreviewCard from "../component/previewCard/Preview-card.jsx"
 
-const Form = () => {
+const Preview = () => {
   return (
     <div>
       <h6 className="text-5xl mb-5 primary-color font-semibold">Select the template :</h6>
@@ -11,9 +11,8 @@ const Form = () => {
 
           <PreviewCard heading="Aurora" thumbnail={"../images/template-1.png"} />
 
-          <PreviewCard heading="Lumos" thumbnail={"../images/template-1.png"} />
+          <PreviewCard heading={"Ethereal"} thumbnail={""} />
 
-          <PreviewCard heading={"Ethereal"} thumbnail={"../images/template-1.png"} />
         </div>
         <div>
           <img src="../images/freepik__modern-style-detailled-illustration-a-teen-girl-is__20119.jpeg" />
@@ -24,4 +23,4 @@ const Form = () => {
   )
 }
 
-export default Form;
+export default Preview;
