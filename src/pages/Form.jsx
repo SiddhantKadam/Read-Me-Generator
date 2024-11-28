@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import IconCheckbox from "../component/iconCheckbox/Icon-checkbox.jsx";
 import { skillsData } from "../config/constants/icons.js";
 import { addOnsData } from "../config/constants/add-ons.js";
+import Toaster from "../component/toaster/toaster.jsx";
 
 const allSkills = skillsData;
 
@@ -53,24 +54,38 @@ const Form = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [message, setMessage] = useState("");
 
     const navigate = useNavigate();
 
+    // State for search query
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Filter skills based on the search query
+    const filteredSkills = allSkills.map((skillCategory) => ({
+        ...skillCategory,
+        array: skillCategory.array.filter((skill) =>
+            skill.label.toLowerCase().includes(searchQuery.toLowerCase())
+        ),
+    }));
+
+    // Set data from localStorage
     useEffect(() => {
         const savedData = localStorage.getItem("formData");
-    
         if (savedData) {
-          // Parse the saved data and set it to the state
-          setFormData(JSON.parse(savedData));
+            setFormData(JSON.parse(savedData));
         }
-      }, []);
+    }, []);
 
     const saveData = (e) => {
         e.preventDefault();
         if (validate()) {
             localStorage.removeItem("formData");
             localStorage.setItem("formData", JSON.stringify(formData));
-            navigate('/preview');
+            setMessage("success");
+            setTimeout(() => {
+                navigate('/preview');
+            }, 1000)
         } else {
             console.log('Form validation failed');
         }
@@ -342,241 +357,264 @@ const Form = () => {
     };
 
     return (
-        <form onSubmit={saveData}>
-            <div className="flex justify-between items-center w-full">
-                <h6 className="text-5xl mb-5 primary-color font-semibold">GitHub Profile README Generator</h6>
-                <button className="primary-button flex pr-6 pl-3 py-2 font-semibold">
-                    <img src={`../gifs/star.gif`} className="w-5 h-5 mr-2 mt-1" /> Star this repo
-                </button>
-            </div>
-            <hr />
+        <div>
+            <Toaster message={message} />
+            <form onSubmit={saveData}>
+                <div className="flex justify-between items-center w-full">
+                    <h6 className="text-5xl mb-5 primary-color font-semibold">GitHub Profile README Generator</h6>
+                    <button className="primary-button flex pr-6 pl-3 py-2 font-semibold">
+                        <img src={`../gifs/star.gif`} className="w-5 h-5 mr-2 mt-1" /> Star this repo
+                    </button>
+                </div>
+                <hr />
 
-            <div className="grid grid-cols-2 gap-1 mt-3">
-                <div className="grid grid-cols-3">
-                    <div>
-                        <TextBox icon="right-arrow.png" placeholder="Enter title, e.g., Mr., Ms." name={"title"} value={formData.title} onChange={handleChange} />
-                        {errors.title && <span style={{ color: '#fff' }}>{errors.title}</span>}
-                    </div>
-                    <div className="col-span-2">
-                        <TextBox icon="user.png" placeholder="Enter your name" name={"name"} value={formData.name} onChange={handleChange} />
-                        {errors.name && <span style={{ color: '#fff' }}>{errors.name}</span>}
-                    </div>
-                    <div className="col-span-3">
-                        <TextBox icon="search.png" placeholder="Enter your work title" name={"workTitle"} value={formData.workTitle} onChange={handleChange} />
-                        {errors.workTitle && <span style={{ color: '#fff' }}>{errors.workTitle}</span>}
-                    </div>
-                </div>
-                <div className="flex mt-7" style={{ borderBottom: "2px solid #81fdff" }}>
-                    <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                        <img src="../icons/info.png" className="w-10 h-10" />
-                    </span>
-                    <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="aboutMe" value={formData.aboutMe} rows="6" cols="60" placeholder="About me..." onChange={handleChange}></textarea>
-                    {errors.aboutMe && <span style={{ color: '#fff' }}>{errors.aboutMe}</span>}
-                </div>
-            </div>
-
-            <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">About myself</h6>
-            <hr></hr>
-
-            {/* Current project */}
-            <div className="grid grid-cols-3 gap-1 mt-3">
-                <div>
-                    <TextBox icon="contribution.png" placeholder="Currently I'm contributing in e.g, Project name" value={formData.currentProjectName} name={"currentProjectName"} onChange={handleChange} />
-                    {errors.currentProjectName && <span style={{ color: '#fff' }}>{errors.currentProjectName}</span>}
-                </div>
-                <div>
-                    <TextBox icon="contribution.png" placeholder="Project link e.g, www.chatbot.com" value={formData.currentProjectLink} name={"currentProjectLink"} onChange={handleChange} />
-                    {errors.currentProjectLink && <span style={{ color: '#fff' }}>{errors.currentProjectLink}</span>}
-                </div>
-                <div>
-                    <TextBox icon="contribution.png" placeholder="Project description" value={formData.currentProjectDecription} name={"currentProjectDecription"} onChange={handleChange} />
-                    {errors.currentProjectDecription && <span style={{ color: '#fff' }}>{errors.currentProjectDecription}</span>}
-                </div>
-            </div>
-
-            {/* Collaborate project */}
-            <div className="grid grid-cols-3 gap-1">
-                <div>
-                    <TextBox icon="interested.png" placeholder="I'm interested in contributing to e.g, Project name" value={formData.interestedProjectName} name={"interestedProjectName"} onChange={handleChange} />
-                    {errors.interestedProjectName && <span style={{ color: '#fff' }}>{errors.interestedProjectName}</span>}
-                </div>
-                <div>
-                    <TextBox icon="interested.png" placeholder="Project link e.g, www.facebook.com" value={formData.interestedProjectLink} name={"interestedProjectLink"} onChange={handleChange} />
-                    {errors.interestedProjectLink && <span style={{ color: '#fff' }}>{errors.interestedProjectLink}</span>}
-                </div>
-                <div>
-                    <TextBox icon="interested.png" placeholder="Project description" value={formData.interestedProjectDescription} name={"interestedProjectDescription"} onChange={handleChange} />
-                    {errors.interestedProjectDescription && <span style={{ color: '#fff' }}>{errors.interestedProjectDescription}</span>}
-                </div>
-            </div>
-
-            {/* Current learning */}
-            <div className="grid grid-cols-3 gap-1">
-                <div>
-                    <TextBox icon="skill-development.png" placeholder="I'm building my skills in e.g, Java" value={formData.learningSkills} name={"learningSkills"} onChange={handleChange} />
-                    {errors.learningSkills && <span style={{ color: '#fff' }}>{errors.learningSkills}</span>}
-                </div>
-                <div>
-                    <TextBox icon="network.png" placeholder="Feel free to reach out to me regarding e.g., Python, ReactJS" value={formData.skilledIn} name={"skilledIn"} onChange={handleChange} />
-                    {errors.skilledIn && <span style={{ color: '#fff' }}>{errors.skilledIn}</span>}
-                </div>
-            </div>
-
-            {/* Connect with me */}
-            <div className="grid grid-cols-3 gap-1">
-                <div>
-                    <TextBox icon="email.png" placeholder="Connect with me here e.g., siddhantk951@gmail.com" value={formData.email} name={"email"} onChange={handleChange} />
-                    {errors.email && <span style={{ color: '#fff' }}>{errors.email}</span>}
-                </div>
-                <div>
-                    <TextBox icon="article.png" placeholder="I frequently publish articles about e.g., www.medium.com/@siddhantk951" value={formData.articles} name={"articles"} onChange={handleChange} />
-                    {errors.articles && <span style={{ color: '#fff' }}>{errors.articles}</span>}
-                </div>
-            </div>
-
-            {/* About me */}
-            <div className="grid grid-cols-3 gap-1">
-                <div>
-                    <TextBox icon="briefcase.png" placeholder="Take a look at my portfolio e.g., www.siddhantportfolio.site" value={formData.portfolio} name={"portfolio"} onChange={handleChange} />
-                    {errors.portfolio && <span style={{ color: '#fff' }}>{errors.portfolio}</span>}
-                </div>
-                <div>
-                    <TextBox icon="personal-profile.png" placeholder="Here’s a summary of my professional experience e.g., www.siddhantresume.site" value={formData.resume} name={"resume"} onChange={handleChange} />
-                    {errors.resume && <span style={{ color: '#fff' }}>{errors.resume}</span>}
-                </div>
-            </div>
-
-            <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Skills</h6>
-            <hr />
-
-            {allSkills.map((skillCategory) => (
-                <div key={skillCategory.title} className="mt-4">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{skillCategory.title}:</h3>
-                    <ul className="grid w-full gap-10 md:grid-cols-6">
-                        {skillCategory.array.map((skill) => (
-                            <li key={skill.id}>
-                                <IconCheckbox id={`${skill.id}-option`} name={"selectedSkills"} value={skill.id} onChange={handleChange} icon={skill.icon} checked={formData.selectedSkills.includes(skill.id)} label={skill.label} />
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))};
-
-            {/* Networking */}
-            <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Networking</h6>
-            <hr></hr>
-
-            <div className="grid grid-cols-8 gap-8 mt-3">
-                <div className="col-start-2 col-end-5">
-                    <TextBox icon="github.png" placeholder="GitHub e.g., SiddhantKadam" value={formData.gitHub} name={"gitHub"} onChange={handleChange} />
-                    {errors.gitHub && <span style={{ color: '#fff' }}>{errors.gitHub}</span>}
-                </div>
-                <div className="col-start-5 col-span-3">
-                    <TextBox icon="twitter.png" placeholder="Twitter e.g., siddhantk98" value={formData.twitter} name={"twitter"} onChange={handleChange} />
-                    {errors.twitter && <span style={{ color: '#fff' }}>{errors.twitter}</span>}
-                </div>
-            </div>
-
-            <div className="grid grid-cols-8 gap-8">
-                <div className="col-start-2 col-end-5">
-                    <TextBox icon="medium.png" placeholder="Medium e.g., @siddhantk951" value={formData.medium} name={"medium"} onChange={handleChange} />
-                    {errors.medium && <span style={{ color: '#fff' }}>{errors.medium}</span>}
-                </div>
-                <div className="col-start-5 col-span-3">
-                    <TextBox icon="codepen.svg" placeholder="Codepen e.g., Siddhant98" value={formData.codepen} name={"codepen"} onChange={handleChange} />
-                    {errors.codepen && <span style={{ color: '#fff' }}>{errors.codepen}</span>}
-                </div>
-            </div>
-
-            <div className="grid grid-cols-8 gap-8">
-                <div className="col-start-2 col-end-5">
-                    <TextBox icon="linkedin.png" placeholder="LinkdIn e.g., siddhant-kadam-2883821a1" value={formData.linkdin} name={"linkdin"} onChange={handleChange} />
-                    {errors.linkdin && <span style={{ color: '#fff' }}>{errors.linkdin}</span>}
-                </div>
-                <div className="col-start-5 col-span-3">
-                    <TextBox icon="dev.png" placeholder="Dev.to e.g., Siddhant98" value={formData.devTo} name={"devTo"} onChange={handleChange} />
-                    {errors.devTo && <span style={{ color: '#fff' }}>{errors.devTo}</span>}
-                </div>
-            </div>
-
-            <div className="grid grid-cols-8 gap-8">
-                <div className="col-start-2 col-end-5">
-                    <TextBox icon="code-sandbox.svg" placeholder="Codesandbox e.g., Siddhant98" value={formData.codeSandBox} name={"codeSandBox"} onChange={handleChange} />
-                    {errors.codeSandBox && <span style={{ color: '#fff' }}>{errors.codeSandBox}</span>}
-                </div>
-                <div className="col-start-5 col-span-3">
-                    <TextBox icon="stackoverflow.png" placeholder="Stackoverflow e.g., Siddhant98" value={formData.stackOverflow} name={"stackOverflow"} onChange={handleChange} />
-                    {errors.stackOverflow && <span style={{ color: '#fff' }}>{errors.stackOverflow}</span>}
-                </div>
-            </div>
-
-            <div className="grid grid-cols-8 gap-8">
-                <div className="col-start-2 col-end-5">
-                    <TextBox icon="leetcode.svg" placeholder="Leetcode e.g., Siddhant98" value={formData.leetCode} name={"leetCode"} onChange={handleChange} />
-                    {errors.leetCode && <span style={{ color: '#fff' }}>{errors.leetCode}</span>}
-                </div>
-                <div className="col-start-5 col-span-3">
-                    <TextBox icon="behance.png" placeholder="Behance e.g., Siddhant98" value={formData.behance} name={"behance"} onChange={handleChange} />
-                    {errors.behance && <span style={{ color: '#fff' }}>{errors.behance}</span>}
-                </div>
-            </div>
-
-            <div className="grid grid-cols-8 gap-8">
-                <div className="col-start-2 col-end-5">
-                    <TextBox icon="facebook.png" placeholder="Facebook e.g., siddhant.kadam.583" value={formData.facebook} name={"facebook"} onChange={handleChange} />
-                    {errors.facebook && <span style={{ color: '#fff' }}>{errors.facebook}</span>}
-                </div>
-                <div className="col-start-5 col-span-3">
-                    <TextBox icon="instagram.png" placeholder="Instagram e.g., igl_elijah" value={formData.instagram} name={"instagram"} onChange={handleChange} />
-                    {errors.instagram && <span style={{ color: '#fff' }}>{errors.instagram}</span>}
-                </div>
-            </div>
-
-            <div className="grid grid-cols-8 gap-8">
-                <div className="col-start-2 col-end-5">
-                    <TextBox icon="youtube.png" placeholder="Youtube e.g., @elijah-game-zone" value={formData.youTube} name={"youTube"} onChange={handleChange} />
-                    {errors.youTube && <span style={{ color: '#fff' }}>{errors.youTube}</span>}
-                </div>
-                <div className="col-start-5 col-span-3">
-                    <TextBox icon="discord.png" placeholder="Discord e.g., igl_elijah" value={formData.discord} name={"discord"} onChange={handleChange} />
-                    {errors.discord && <span style={{ color: '#fff' }}>{errors.discord}</span>}
-                </div>
-            </div>
-
-            {/* Additional features */}
-            <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Additional features</h6>
-            <hr />
-
-            <ul className="mt-3 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:grid sm:grid-cols-3 sm:grid-rows-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                {addOns.map((add) => (
-                    <li key={add.id} className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                        <div className="flex items-center ps-3">
-                            <input
-                                id={`${add.id}-option`}
-                                type="checkbox"
-                                name="selectedAddOns"
-                                value={add.id}
-                                onChange={handleChange}
-                                checked={formData.selectedAddOns.includes(add.id)}
-                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                            <label htmlFor={`${add.id}-option`} className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                {add.label}
-                            </label>
+                <div className="grid grid-cols-2 gap-1 mt-3">
+                    <div className="grid grid-cols-3">
+                        <div>
+                            <TextBox icon="right-arrow.png" placeholder="Enter title, e.g., Mr., Ms." name={"title"} value={formData.title} onChange={handleChange} />
+                            {errors.title && <span style={{ color: '#fff' }}>{errors.title}</span>}
                         </div>
-                    </li>
-                ))}
-            </ul>
+                        <div className="col-span-2">
+                            <TextBox icon="user.png" placeholder="Enter your name" name={"name"} value={formData.name} onChange={handleChange} />
+                            {errors.name && <span style={{ color: '#fff' }}>{errors.name}</span>}
+                        </div>
+                        <div className="col-span-3">
+                            <TextBox icon="search.png" placeholder="Enter your work title" name={"workTitle"} value={formData.workTitle} onChange={handleChange} />
+                            {errors.workTitle && <span style={{ color: '#fff' }}>{errors.workTitle}</span>}
+                        </div>
+                    </div>
+                    <div className="flex mt-7" style={{ borderBottom: "2px solid #81fdff" }}>
+                        <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                            <img src="../icons/info.png" className="w-10 h-10" />
+                        </span>
+                        <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="aboutMe" value={formData.aboutMe} rows="6" cols="60" placeholder="About me..." onChange={handleChange}></textarea>
+                        {errors.aboutMe && <span style={{ color: '#fff' }}>{errors.aboutMe}</span>}
+                    </div>
+                </div>
+
+                <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">About myself</h6>
+                <hr></hr>
+
+                {/* Current project */}
+                <div className="grid grid-cols-3 gap-1 mt-3">
+                    <div>
+                        <TextBox icon="contribution.png" placeholder="Currently I'm contributing in e.g, Project name" value={formData.currentProjectName} name={"currentProjectName"} onChange={handleChange} />
+                        {errors.currentProjectName && <span style={{ color: '#fff' }}>{errors.currentProjectName}</span>}
+                    </div>
+                    <div>
+                        <TextBox icon="contribution.png" placeholder="Project link e.g, www.chatbot.com" value={formData.currentProjectLink} name={"currentProjectLink"} onChange={handleChange} />
+                        {errors.currentProjectLink && <span style={{ color: '#fff' }}>{errors.currentProjectLink}</span>}
+                    </div>
+                    <div>
+                        <TextBox icon="contribution.png" placeholder="Project description" value={formData.currentProjectDecription} name={"currentProjectDecription"} onChange={handleChange} />
+                        {errors.currentProjectDecription && <span style={{ color: '#fff' }}>{errors.currentProjectDecription}</span>}
+                    </div>
+                </div>
+
+                {/* Collaborate project */}
+                <div className="grid grid-cols-3 gap-1">
+                    <div>
+                        <TextBox icon="interested.png" placeholder="I'm interested in contributing to e.g, Project name" value={formData.interestedProjectName} name={"interestedProjectName"} onChange={handleChange} />
+                        {errors.interestedProjectName && <span style={{ color: '#fff' }}>{errors.interestedProjectName}</span>}
+                    </div>
+                    <div>
+                        <TextBox icon="interested.png" placeholder="Project link e.g, www.facebook.com" value={formData.interestedProjectLink} name={"interestedProjectLink"} onChange={handleChange} />
+                        {errors.interestedProjectLink && <span style={{ color: '#fff' }}>{errors.interestedProjectLink}</span>}
+                    </div>
+                    <div>
+                        <TextBox icon="interested.png" placeholder="Project description" value={formData.interestedProjectDescription} name={"interestedProjectDescription"} onChange={handleChange} />
+                        {errors.interestedProjectDescription && <span style={{ color: '#fff' }}>{errors.interestedProjectDescription}</span>}
+                    </div>
+                </div>
+
+                {/* Current learning */}
+                <div className="grid grid-cols-3 gap-1">
+                    <div>
+                        <TextBox icon="skill-development.png" placeholder="I'm building my skills in e.g, Java" value={formData.learningSkills} name={"learningSkills"} onChange={handleChange} />
+                        {errors.learningSkills && <span style={{ color: '#fff' }}>{errors.learningSkills}</span>}
+                    </div>
+                    <div>
+                        <TextBox icon="network.png" placeholder="Feel free to reach out to me regarding e.g., Python, ReactJS" value={formData.skilledIn} name={"skilledIn"} onChange={handleChange} />
+                        {errors.skilledIn && <span style={{ color: '#fff' }}>{errors.skilledIn}</span>}
+                    </div>
+                </div>
+
+                {/* Connect with me */}
+                <div className="grid grid-cols-3 gap-1">
+                    <div>
+                        <TextBox icon="email.png" placeholder="Connect with me here e.g., siddhantk951@gmail.com" value={formData.email} name={"email"} onChange={handleChange} />
+                        {errors.email && <span style={{ color: '#fff' }}>{errors.email}</span>}
+                    </div>
+                    <div>
+                        <TextBox icon="article.png" placeholder="I frequently publish articles about e.g., www.medium.com/@siddhantk951" value={formData.articles} name={"articles"} onChange={handleChange} />
+                        {errors.articles && <span style={{ color: '#fff' }}>{errors.articles}</span>}
+                    </div>
+                </div>
+
+                {/* About me */}
+                <div className="grid grid-cols-3 gap-1">
+                    <div>
+                        <TextBox icon="briefcase.png" placeholder="Take a look at my portfolio e.g., www.siddhantportfolio.site" value={formData.portfolio} name={"portfolio"} onChange={handleChange} />
+                        {errors.portfolio && <span style={{ color: '#fff' }}>{errors.portfolio}</span>}
+                    </div>
+                    <div>
+                        <TextBox icon="personal-profile.png" placeholder="Here’s a summary of my professional experience e.g., www.siddhantresume.site" value={formData.resume} name={"resume"} onChange={handleChange} />
+                        {errors.resume && <span style={{ color: '#fff' }}>{errors.resume}</span>}
+                    </div>
+                </div>
+
+                <div className="flex justify-between items-center mt-6 mb-3">
+                    {/* Left-aligned heading */}
+                    <h6 className="primary-color font-semibold text-3xl">Skills</h6>
+
+                    {/* Right-aligned search bar */}
+                    <div className="flex items-center max-w-lg">
+                        <div className="relative w-full">
+                            <input
+                                type="text"
+                                id="simple-search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Search skills..."
+                            />
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                {filteredSkills.map((skillCategory) => (
+                    skillCategory.array.length > 0 && (
+                        <div key={skillCategory.title} className="mt-4">
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{skillCategory.title}:</h3>
+                            <ul className="grid w-full gap-10 md:grid-cols-6">
+                                {skillCategory.array.map((skill) => (
+                                    <li key={skill.id}>
+                                        <IconCheckbox id={`${skill.id}-option`} name={"selectedSkills"} value={skill.id} onChange={handleChange} icon={skill.icon} checked={formData.selectedSkills.includes(skill.id)} label={skill.label} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )
+                ))};
+
+                {/* Networking */}
+                <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Networking</h6>
+                <hr></hr>
+
+                <div className="grid grid-cols-8 gap-8 mt-3">
+                    <div className="col-start-2 col-end-5">
+                        <TextBox icon="github.png" placeholder="GitHub e.g., SiddhantKadam" value={formData.gitHub} name={"gitHub"} onChange={handleChange} />
+                        {errors.gitHub && <span style={{ color: '#fff' }}>{errors.gitHub}</span>}
+                    </div>
+                    <div className="col-start-5 col-span-3">
+                        <TextBox icon="twitter.png" placeholder="Twitter e.g., siddhantk98" value={formData.twitter} name={"twitter"} onChange={handleChange} />
+                        {errors.twitter && <span style={{ color: '#fff' }}>{errors.twitter}</span>}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-8 gap-8">
+                    <div className="col-start-2 col-end-5">
+                        <TextBox icon="medium.png" placeholder="Medium e.g., @siddhantk951" value={formData.medium} name={"medium"} onChange={handleChange} />
+                        {errors.medium && <span style={{ color: '#fff' }}>{errors.medium}</span>}
+                    </div>
+                    <div className="col-start-5 col-span-3">
+                        <TextBox icon="codepen.svg" placeholder="Codepen e.g., Siddhant98" value={formData.codepen} name={"codepen"} onChange={handleChange} />
+                        {errors.codepen && <span style={{ color: '#fff' }}>{errors.codepen}</span>}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-8 gap-8">
+                    <div className="col-start-2 col-end-5">
+                        <TextBox icon="linkedin.png" placeholder="LinkdIn e.g., siddhant-kadam-2883821a1" value={formData.linkdin} name={"linkdin"} onChange={handleChange} />
+                        {errors.linkdin && <span style={{ color: '#fff' }}>{errors.linkdin}</span>}
+                    </div>
+                    <div className="col-start-5 col-span-3">
+                        <TextBox icon="dev.png" placeholder="Dev.to e.g., Siddhant98" value={formData.devTo} name={"devTo"} onChange={handleChange} />
+                        {errors.devTo && <span style={{ color: '#fff' }}>{errors.devTo}</span>}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-8 gap-8">
+                    <div className="col-start-2 col-end-5">
+                        <TextBox icon="code-sandbox.svg" placeholder="Codesandbox e.g., Siddhant98" value={formData.codeSandBox} name={"codeSandBox"} onChange={handleChange} />
+                        {errors.codeSandBox && <span style={{ color: '#fff' }}>{errors.codeSandBox}</span>}
+                    </div>
+                    <div className="col-start-5 col-span-3">
+                        <TextBox icon="stackoverflow.png" placeholder="Stackoverflow e.g., Siddhant98" value={formData.stackOverflow} name={"stackOverflow"} onChange={handleChange} />
+                        {errors.stackOverflow && <span style={{ color: '#fff' }}>{errors.stackOverflow}</span>}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-8 gap-8">
+                    <div className="col-start-2 col-end-5">
+                        <TextBox icon="leetcode.svg" placeholder="Leetcode e.g., Siddhant98" value={formData.leetCode} name={"leetCode"} onChange={handleChange} />
+                        {errors.leetCode && <span style={{ color: '#fff' }}>{errors.leetCode}</span>}
+                    </div>
+                    <div className="col-start-5 col-span-3">
+                        <TextBox icon="behance.png" placeholder="Behance e.g., Siddhant98" value={formData.behance} name={"behance"} onChange={handleChange} />
+                        {errors.behance && <span style={{ color: '#fff' }}>{errors.behance}</span>}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-8 gap-8">
+                    <div className="col-start-2 col-end-5">
+                        <TextBox icon="facebook.png" placeholder="Facebook e.g., siddhant.kadam.583" value={formData.facebook} name={"facebook"} onChange={handleChange} />
+                        {errors.facebook && <span style={{ color: '#fff' }}>{errors.facebook}</span>}
+                    </div>
+                    <div className="col-start-5 col-span-3">
+                        <TextBox icon="instagram.png" placeholder="Instagram e.g., igl_elijah" value={formData.instagram} name={"instagram"} onChange={handleChange} />
+                        {errors.instagram && <span style={{ color: '#fff' }}>{errors.instagram}</span>}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-8 gap-8">
+                    <div className="col-start-2 col-end-5">
+                        <TextBox icon="youtube.png" placeholder="Youtube e.g., @elijah-game-zone" value={formData.youTube} name={"youTube"} onChange={handleChange} />
+                        {errors.youTube && <span style={{ color: '#fff' }}>{errors.youTube}</span>}
+                    </div>
+                    <div className="col-start-5 col-span-3">
+                        <TextBox icon="discord.png" placeholder="Discord e.g., igl_elijah" value={formData.discord} name={"discord"} onChange={handleChange} />
+                        {errors.discord && <span style={{ color: '#fff' }}>{errors.discord}</span>}
+                    </div>
+                </div>
+
+                {/* Additional features */}
+                <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Additional features</h6>
+                <hr />
+
+                <ul className="mt-3 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:grid sm:grid-cols-3 sm:grid-rows-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    {addOns.map((add) => (
+                        <li key={add.id} className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                            <div className="flex items-center ps-3">
+                                <input
+                                    id={`${add.id}-option`}
+                                    type="checkbox"
+                                    name="selectedAddOns"
+                                    value={add.id}
+                                    onChange={handleChange}
+                                    checked={formData.selectedAddOns.includes(add.id)}
+                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                />
+                                <label htmlFor={`${add.id}-option`} className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                    {add.label}
+                                </label>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
 
 
-            <div className="flex justify-center items-center">
-                <button type="submit" className="primary-button flex px-3 py-2 mt-5 font-semibold">
-                    Select the template <img src={`../icons/next.png`} className="w-5 h-5 ml-2 mt-1" />
-                </button>
-            </div>
+                <div className="flex justify-center items-center">
+                    <button type="submit" className="primary-button flex px-3 py-2 mt-5 font-semibold">
+                        Select the template <img src={`../icons/next.png`} className="w-5 h-5 ml-2 mt-1" />
+                    </button>
+                </div>
 
-        </form>
-
+            </form>
+        </div>
     )
 }
 

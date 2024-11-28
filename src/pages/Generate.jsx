@@ -80,10 +80,10 @@ const Generate = () => {
                 </div>
 
             </div>
-            <div>
-                {/* <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3hyZzV4MWNlMG5nYW1uMTFrbnl3Mmt2NHFzOXJlb2g5dzg5YTU5byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/HkCXoK2qN8vzTMiegK/giphy.gif" /> */}
-                <img src="https://media.giphy.com/media/li9IQKvhVw1wgUUzCV/giphy.gif?cid=ecf05e47uvr9m8l7botcnwhzpsv703ohyq4y5hezarr7cukc&ep=v1_stickers_search&rid=giphy.gif&ct=s" />
-                <h3>Keep growing</h3>
+            <div className='pt-5 text-center'>
+                <img className='mt-5' src="https://media.giphy.com/media/4IyfwJfx1WEGEIxSw6/giphy.gif?cid=ecf05e47fyhbr737guzwofq9z0gc9gu5xcnld79pjmrw9o9s&ep=v1_stickers_search&rid=giphy.gif&ct=ts" />
+                {/* <img src="https://media.giphy.com/media/7ZeSOedaBmPTtnTgWt/giphy.gif?cid=ecf05e475y20on0nbj0cgznc1zpcdh2yin1lhmdx0au8ysji&ep=v1_stickers_search&rid=giphy.gif&ct=s" />
+                <h1 className="thankYou">Keep Growing</h1> */}
             </div>
         </div>
     )

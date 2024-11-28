@@ -28,3 +28,19 @@ code {
   background-color: #000;
   color: #fff;
 }
+
+.thankYou {
+  font-family: 'Calligraffitti', cursive;
+  font-weight: 700;
+  font-size: 3rem;
+  /* text-shadow: -15px 5px 20px #ced0d3; */
+  letter-spacing: 0.02em;
+  color: #F9f1cc;
+  text-shadow: 5px 5px 0px #FFB650
+}
+
+.toasterClass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}

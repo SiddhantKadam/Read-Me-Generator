@@ -5,7 +5,15 @@ import Preview from './pages/Preview';
 import Generate from './pages/Generate.jsx';
 import Card from './component/card/Card.jsx';
 
+import Toaster from './component/toaster/toaster.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { React, useState } from "react";
+
 function App() {
+
+  const [message, setMessage] = useState("");
+
   return (
     <Router>
       <div className="App">
@@ -23,6 +31,8 @@ function App() {
           </Card>
         </div>
       </div>
+      <Toaster message={message} />
+      <ToastContainer />
     </Router>
   );
 }
