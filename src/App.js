@@ -16,6 +16,7 @@ function App() {
 
   return (
     <Router>
+        <marquee className="marqueeClass">This application is good for laptop or PC size. It may not work well on mobile or tablet.</marquee>
       <div className="App">
         <video autoPlay loop muted className="background-video">
           <source src={`../background.mp4`} type="video/mp4" />

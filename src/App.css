@@ -25,3 +25,9 @@
   justify-content: center;
   align-items: center;
 }
+
+.marqueeClass {
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+}
