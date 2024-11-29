@@ -362,7 +362,7 @@ const Form = () => {
             <form onSubmit={saveData}>
                 <div className="flex justify-between items-center w-full">
                     <h6 className="text-5xl mb-5 primary-color font-semibold">GitHub Profile README Generator</h6>
-                    <button className="primary-button flex pr-6 pl-3 py-2 font-semibold">
+                    <button className="primary-button flex pr-6 pl-3 py-2 font-semibold" onClick={() => window.open("https://github.com/SiddhantKadam/Read-Me-Generator", "_blank")}>
                         <img src={`../gifs/star.gif`} className="w-5 h-5 mr-2 mt-1" /> Star this repo
                     </button>
                 </div>
