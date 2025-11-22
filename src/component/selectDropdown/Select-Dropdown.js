@@ -8,7 +8,7 @@ const SelectDropdown = ({ icon, label, required, options, value, onChange }) => 
         >
             {/* Icon Box */}
             <span className="inline-flex items-center p-2 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:border-gray-600">
-                <img src={`../icons/${icon}`} className="w-10 h-10" />
+                <img src={`${process.env.PUBLIC_URL}/icons/${icon}`} className="w-10 h-10" />
             </span>
 
             {/* Custom Select */}

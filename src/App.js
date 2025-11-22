@@ -8,7 +8,7 @@ import Card from './component/card/Card.jsx';
 import Toaster from './component/toaster/toaster.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { React, useState } from "react";
+import { useState } from "react";
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
 
       <div className="App">
         <video autoPlay loop muted className="background-video">
-          <source src={`../background.mp4`} type="video/mp4" />
+          <source src={`${process.env.PUBLIC_URL}/background.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 

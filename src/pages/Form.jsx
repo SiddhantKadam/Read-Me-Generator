@@ -370,7 +370,7 @@ const Form = () => {
                 <div className="flex justify-between items-center w-full">
                     <h6 className="text-5xl mb-5 primary-color font-semibold">GitHub Profile README Generator</h6>
                     <button className="primary-button flex pr-6 pl-3 py-2 font-semibold" onClick={() => window.open("https://github.com/SiddhantKadam/Read-Me-Generator", "_blank")}>
-                        <img src={`../gifs/star.gif`} className="w-5 h-5 mr-2 mt-1" /> Star this repo
+                        <img src={`${process.env.PUBLIC_URL}/gifs/star.gif`} className="w-5 h-5 mr-2 mt-1" /> Star this repo
                     </button>
                 </div>
                 <hr />
@@ -402,7 +402,7 @@ const Form = () => {
                     <div className="mt-7">
                         <div className="flex" style={{ borderBottom: "2px solid #81fdff" }}>
                             <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                                <img src="../icons/info.png" className="w-10 h-10" />
+                                <img src={`${process.env.PUBLIC_URL}/icons/info.png`} className="w-10 h-10" />
                             </span>
                             <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="aboutMe" value={formData.aboutMe} rows="6" cols="60" placeholder="About me..." onChange={handleChange}></textarea>
                         </div>
@@ -627,7 +627,7 @@ const Form = () => {
 
                 <div className="flex justify-center items-center">
                     <button type="submit" className="primary-button flex px-3 py-2 mt-5 font-semibold">
-                        Select the template <img src={`../icons/next.png`} className="w-5 h-5 ml-2 mt-1" />
+                        Select the template <img src={`${process.env.PUBLIC_URL}/icons/next.png`} className="w-5 h-5 ml-2 mt-1" />
                     </button>
                 </div>
 
