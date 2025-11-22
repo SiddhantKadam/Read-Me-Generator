@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import TextBox from "../component/textBox/Text-box.jsx";
+import SelectDropdown from "../component/selectDropdown/Select-Dropdown.js";
 import { useNavigate } from 'react-router-dom';
 import IconCheckbox from "../component/iconCheckbox/Icon-checkbox.jsx";
 import { skillsData } from "../config/constants/icons.js";
@@ -56,6 +57,9 @@ const Form = () => {
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState("");
 
+    const titles = ["Mr.", "Ms.", "Mrs.", "Other"];
+    // const [selectedTitle, setSelectedTitle] = useState("");
+
     const navigate = useNavigate();
 
     // State for search query
@@ -97,9 +101,9 @@ const Form = () => {
         let newErrors = { ...errors };
 
         // Title validation (must be "Mr." or "Ms.")
-        if (formData.title?.trim().length > 5) {
+        if (!formData.title) {
             formIsValid = false;
-            newErrors.title = 'Maximun 5 characters allowed';
+            newErrors.title = 'Title is required';
         }
 
         // Name validation (must have at least 3 characters)
@@ -119,7 +123,10 @@ const Form = () => {
             newErrors.workTitle = 'Minimum 3 & Maximun 50 characters allowed';
         }
 
-        if (formData.aboutMe?.trim().length > 500) {
+        if (!formData.aboutMe) {
+            formIsValid = false;
+            newErrors.aboutMe = 'About section is required';
+        } else if (formData.aboutMe?.trim().length > 500) {
             formIsValid = false;
             newErrors.aboutMe = 'Maximun 500 characters allowed';
         }
@@ -370,25 +377,36 @@ const Form = () => {
 
                 <div className="grid grid-cols-2 gap-1 mt-3">
                     <div className="grid grid-cols-3">
-                        <div>
-                            <TextBox icon="right-arrow.png" placeholder="Enter title, e.g., Mr., Ms." name={"title"} value={formData.title} onChange={handleChange} />
-                            {errors.title && <span style={{ color: '#fff' }}>{errors.title}</span>}
+                        <div className="col-span-1">
+                            <SelectDropdown
+                                icon="equality.png"
+                                label="Title"
+                                required={true}
+                                options={titles}
+                                value={formData.title}
+                                onChange={(value) =>
+                                    setFormData({ ...formData, title: value })
+                                }
+                            />
+                            {errors.title && <span className="errorMsg">{errors.title}</span>}
                         </div>
                         <div className="col-span-2">
-                            <TextBox icon="user.png" placeholder="Enter your name" name={"name"} value={formData.name} onChange={handleChange} />
-                            {errors.name && <span style={{ color: '#fff' }}>{errors.name}</span>}
+                            <TextBox icon="user.png" placeholder="Enter your name" name={"name"} value={formData.name} required={true} onChange={handleChange} />
+                            {errors.name && <span className="errorMsg">{errors.name}</span>}
                         </div>
                         <div className="col-span-3">
-                            <TextBox icon="search.png" placeholder="Enter your work title" name={"workTitle"} value={formData.workTitle} onChange={handleChange} />
-                            {errors.workTitle && <span style={{ color: '#fff' }}>{errors.workTitle}</span>}
+                            <TextBox icon="search.png" placeholder="Enter your work title" name={"workTitle"} value={formData.workTitle} required={true} onChange={handleChange} />
+                            {errors.workTitle && <span className="errorMsg">{errors.workTitle}</span>}
                         </div>
                     </div>
-                    <div className="flex mt-7" style={{ borderBottom: "2px solid #81fdff" }}>
-                        <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                            <img src="../icons/info.png" className="w-10 h-10" />
-                        </span>
-                        <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="aboutMe" value={formData.aboutMe} rows="6" cols="60" placeholder="About me..." onChange={handleChange}></textarea>
-                        {errors.aboutMe && <span style={{ color: '#fff' }}>{errors.aboutMe}</span>}
+                    <div className="mt-7">
+                        <div className="flex" style={{ borderBottom: "2px solid #81fdff" }}>
+                            <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                <img src="../icons/info.png" className="w-10 h-10" />
+                            </span>
+                            <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="aboutMe" value={formData.aboutMe} rows="6" cols="60" placeholder="About me..." onChange={handleChange}></textarea>
+                        </div>
+                        {errors.aboutMe && <span className="errorMsg">{errors.aboutMe}</span>}
                     </div>
                 </div>
 
@@ -399,15 +417,15 @@ const Form = () => {
                 <div className="grid grid-cols-3 gap-1 mt-3">
                     <div>
                         <TextBox icon="contribution.png" placeholder="Currently I'm contributing in e.g, Project name" value={formData.currentProjectName} name={"currentProjectName"} onChange={handleChange} />
-                        {errors.currentProjectName && <span style={{ color: '#fff' }}>{errors.currentProjectName}</span>}
+                        {errors.currentProjectName && <span className="errorMsg">{errors.currentProjectName}</span>}
                     </div>
                     <div>
                         <TextBox icon="contribution.png" placeholder="Project link e.g, www.chatbot.com" value={formData.currentProjectLink} name={"currentProjectLink"} onChange={handleChange} />
-                        {errors.currentProjectLink && <span style={{ color: '#fff' }}>{errors.currentProjectLink}</span>}
+                        {errors.currentProjectLink && <span className="errorMsg">{errors.currentProjectLink}</span>}
                     </div>
                     <div>
                         <TextBox icon="contribution.png" placeholder="Project description" value={formData.currentProjectDecription} name={"currentProjectDecription"} onChange={handleChange} />
-                        {errors.currentProjectDecription && <span style={{ color: '#fff' }}>{errors.currentProjectDecription}</span>}
+                        {errors.currentProjectDecription && <span className="errorMsg">{errors.currentProjectDecription}</span>}
                     </div>
                 </div>
 
@@ -415,15 +433,15 @@ const Form = () => {
                 <div className="grid grid-cols-3 gap-1">
                     <div>
                         <TextBox icon="interested.png" placeholder="I'm interested in contributing to e.g, Project name" value={formData.interestedProjectName} name={"interestedProjectName"} onChange={handleChange} />
-                        {errors.interestedProjectName && <span style={{ color: '#fff' }}>{errors.interestedProjectName}</span>}
+                        {errors.interestedProjectName && <span className="errorMsg">{errors.interestedProjectName}</span>}
                     </div>
                     <div>
                         <TextBox icon="interested.png" placeholder="Project link e.g, www.facebook.com" value={formData.interestedProjectLink} name={"interestedProjectLink"} onChange={handleChange} />
-                        {errors.interestedProjectLink && <span style={{ color: '#fff' }}>{errors.interestedProjectLink}</span>}
+                        {errors.interestedProjectLink && <span className="errorMsg">{errors.interestedProjectLink}</span>}
                     </div>
                     <div>
                         <TextBox icon="interested.png" placeholder="Project description" value={formData.interestedProjectDescription} name={"interestedProjectDescription"} onChange={handleChange} />
-                        {errors.interestedProjectDescription && <span style={{ color: '#fff' }}>{errors.interestedProjectDescription}</span>}
+                        {errors.interestedProjectDescription && <span className="errorMsg">{errors.interestedProjectDescription}</span>}
                     </div>
                 </div>
 
@@ -431,11 +449,11 @@ const Form = () => {
                 <div className="grid grid-cols-3 gap-1">
                     <div>
                         <TextBox icon="skill-development.png" placeholder="I'm building my skills in e.g, Java" value={formData.learningSkills} name={"learningSkills"} onChange={handleChange} />
-                        {errors.learningSkills && <span style={{ color: '#fff' }}>{errors.learningSkills}</span>}
+                        {errors.learningSkills && <span className="errorMsg">{errors.learningSkills}</span>}
                     </div>
                     <div>
                         <TextBox icon="network.png" placeholder="Feel free to reach out to me regarding e.g., Python, ReactJS" value={formData.skilledIn} name={"skilledIn"} onChange={handleChange} />
-                        {errors.skilledIn && <span style={{ color: '#fff' }}>{errors.skilledIn}</span>}
+                        {errors.skilledIn && <span className="errorMsg">{errors.skilledIn}</span>}
                     </div>
                 </div>
 
@@ -443,11 +461,11 @@ const Form = () => {
                 <div className="grid grid-cols-3 gap-1">
                     <div>
                         <TextBox icon="email.png" placeholder="Connect with me here e.g., siddhantk951@gmail.com" value={formData.email} name={"email"} onChange={handleChange} />
-                        {errors.email && <span style={{ color: '#fff' }}>{errors.email}</span>}
+                        {errors.email && <span className="errorMsg">{errors.email}</span>}
                     </div>
                     <div>
                         <TextBox icon="article.png" placeholder="I frequently publish articles about e.g., www.medium.com/@siddhantk951" value={formData.articles} name={"articles"} onChange={handleChange} />
-                        {errors.articles && <span style={{ color: '#fff' }}>{errors.articles}</span>}
+                        {errors.articles && <span className="errorMsg">{errors.articles}</span>}
                     </div>
                 </div>
 
@@ -455,11 +473,11 @@ const Form = () => {
                 <div className="grid grid-cols-3 gap-1">
                     <div>
                         <TextBox icon="briefcase.png" placeholder="Take a look at my portfolio e.g., www.siddhantportfolio.site" value={formData.portfolio} name={"portfolio"} onChange={handleChange} />
-                        {errors.portfolio && <span style={{ color: '#fff' }}>{errors.portfolio}</span>}
+                        {errors.portfolio && <span className="errorMsg">{errors.portfolio}</span>}
                     </div>
                     <div>
                         <TextBox icon="personal-profile.png" placeholder="Here’s a summary of my professional experience e.g., www.siddhantresume.site" value={formData.resume} name={"resume"} onChange={handleChange} />
-                        {errors.resume && <span style={{ color: '#fff' }}>{errors.resume}</span>}
+                        {errors.resume && <span className="errorMsg">{errors.resume}</span>}
                     </div>
                 </div>
 
@@ -507,77 +525,77 @@ const Form = () => {
                 <div className="grid grid-cols-8 gap-8 mt-3">
                     <div className="col-start-2 col-end-5">
                         <TextBox icon="github.png" placeholder="GitHub e.g., SiddhantKadam" value={formData.gitHub} name={"gitHub"} onChange={handleChange} />
-                        {errors.gitHub && <span style={{ color: '#fff' }}>{errors.gitHub}</span>}
+                        {errors.gitHub && <span className="errorMsg">{errors.gitHub}</span>}
                     </div>
                     <div className="col-start-5 col-span-3">
                         <TextBox icon="twitter.png" placeholder="Twitter e.g., siddhantk98" value={formData.twitter} name={"twitter"} onChange={handleChange} />
-                        {errors.twitter && <span style={{ color: '#fff' }}>{errors.twitter}</span>}
+                        {errors.twitter && <span className="errorMsg">{errors.twitter}</span>}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-8 gap-8">
                     <div className="col-start-2 col-end-5">
                         <TextBox icon="medium.png" placeholder="Medium e.g., @siddhantk951" value={formData.medium} name={"medium"} onChange={handleChange} />
-                        {errors.medium && <span style={{ color: '#fff' }}>{errors.medium}</span>}
+                        {errors.medium && <span className="errorMsg">{errors.medium}</span>}
                     </div>
                     <div className="col-start-5 col-span-3">
                         <TextBox icon="codepen.svg" placeholder="Codepen e.g., Siddhant98" value={formData.codepen} name={"codepen"} onChange={handleChange} />
-                        {errors.codepen && <span style={{ color: '#fff' }}>{errors.codepen}</span>}
+                        {errors.codepen && <span className="errorMsg">{errors.codepen}</span>}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-8 gap-8">
                     <div className="col-start-2 col-end-5">
                         <TextBox icon="linkedin.png" placeholder="LinkdIn e.g., siddhant-kadam-2883821a1" value={formData.linkdin} name={"linkdin"} onChange={handleChange} />
-                        {errors.linkdin && <span style={{ color: '#fff' }}>{errors.linkdin}</span>}
+                        {errors.linkdin && <span className="errorMsg">{errors.linkdin}</span>}
                     </div>
                     <div className="col-start-5 col-span-3">
                         <TextBox icon="dev.png" placeholder="Dev.to e.g., Siddhant98" value={formData.devTo} name={"devTo"} onChange={handleChange} />
-                        {errors.devTo && <span style={{ color: '#fff' }}>{errors.devTo}</span>}
+                        {errors.devTo && <span className="errorMsg">{errors.devTo}</span>}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-8 gap-8">
                     <div className="col-start-2 col-end-5">
                         <TextBox icon="code-sandbox.svg" placeholder="Codesandbox e.g., Siddhant98" value={formData.codeSandBox} name={"codeSandBox"} onChange={handleChange} />
-                        {errors.codeSandBox && <span style={{ color: '#fff' }}>{errors.codeSandBox}</span>}
+                        {errors.codeSandBox && <span className="errorMsg">{errors.codeSandBox}</span>}
                     </div>
                     <div className="col-start-5 col-span-3">
                         <TextBox icon="stackoverflow.png" placeholder="Stackoverflow e.g., Siddhant98" value={formData.stackOverflow} name={"stackOverflow"} onChange={handleChange} />
-                        {errors.stackOverflow && <span style={{ color: '#fff' }}>{errors.stackOverflow}</span>}
+                        {errors.stackOverflow && <span className="errorMsg">{errors.stackOverflow}</span>}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-8 gap-8">
                     <div className="col-start-2 col-end-5">
                         <TextBox icon="leetcode.svg" placeholder="Leetcode e.g., Siddhant98" value={formData.leetCode} name={"leetCode"} onChange={handleChange} />
-                        {errors.leetCode && <span style={{ color: '#fff' }}>{errors.leetCode}</span>}
+                        {errors.leetCode && <span className="errorMsg">{errors.leetCode}</span>}
                     </div>
                     <div className="col-start-5 col-span-3">
                         <TextBox icon="behance.png" placeholder="Behance e.g., Siddhant98" value={formData.behance} name={"behance"} onChange={handleChange} />
-                        {errors.behance && <span style={{ color: '#fff' }}>{errors.behance}</span>}
+                        {errors.behance && <span className="errorMsg">{errors.behance}</span>}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-8 gap-8">
                     <div className="col-start-2 col-end-5">
                         <TextBox icon="facebook.png" placeholder="Facebook e.g., siddhant.kadam.583" value={formData.facebook} name={"facebook"} onChange={handleChange} />
-                        {errors.facebook && <span style={{ color: '#fff' }}>{errors.facebook}</span>}
+                        {errors.facebook && <span className="errorMsg">{errors.facebook}</span>}
                     </div>
                     <div className="col-start-5 col-span-3">
                         <TextBox icon="instagram.png" placeholder="Instagram e.g., igl_elijah" value={formData.instagram} name={"instagram"} onChange={handleChange} />
-                        {errors.instagram && <span style={{ color: '#fff' }}>{errors.instagram}</span>}
+                        {errors.instagram && <span className="errorMsg">{errors.instagram}</span>}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-8 gap-8">
                     <div className="col-start-2 col-end-5">
                         <TextBox icon="youtube.png" placeholder="Youtube e.g., @elijah-game-zone" value={formData.youTube} name={"youTube"} onChange={handleChange} />
-                        {errors.youTube && <span style={{ color: '#fff' }}>{errors.youTube}</span>}
+                        {errors.youTube && <span className="errorMsg">{errors.youTube}</span>}
                     </div>
                     <div className="col-start-5 col-span-3">
                         <TextBox icon="discord.png" placeholder="Discord e.g., igl_elijah" value={formData.discord} name={"discord"} onChange={handleChange} />
-                        {errors.discord && <span style={{ color: '#fff' }}>{errors.discord}</span>}
+                        {errors.discord && <span className="errorMsg">{errors.discord}</span>}
                     </div>
                 </div>
 

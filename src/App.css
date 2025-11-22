@@ -1,6 +1,6 @@
 .App {
   /* height: 100vh; */
-  padding: 0 30px; 
+  padding: 0 30px;
 
   position: relative;
   height: 100vh;
@@ -30,4 +30,12 @@
   position: absolute;
   background-color: #000;
   color: #fff;
+}
+
+.errorMsg {
+  color: red;
+  background-color: white;
+  padding: 2px 4px;
+  font-size: 12px;
+  border-radius: 5px;
 }
