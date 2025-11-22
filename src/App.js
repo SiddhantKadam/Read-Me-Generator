@@ -1,6 +1,6 @@
 import './App.css';
 import Form from './pages/Form.jsx';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Preview from './pages/Preview';
 import Generate from './pages/Generate.jsx';
 import Card from './component/card/Card.jsx';
@@ -15,13 +15,17 @@ function App() {
   const [message, setMessage] = useState("");
 
   return (
-    <Router>
-        <marquee className="marqueeClass">This application is good for laptop or PC size. It may not work well on mobile or tablet.</marquee>
+    <>
+      <marquee className="marqueeClass">
+        This application is good for laptop or PC size. It may not work well on mobile or tablet.
+      </marquee>
+
       <div className="App">
         <video autoPlay loop muted className="background-video">
           <source src={`../background.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+
         <div className="centered-form w-full">
           <Card>
             <Routes>
@@ -32,9 +36,10 @@ function App() {
           </Card>
         </div>
       </div>
+
       <Toaster message={message} />
       <ToastContainer />
-    </Router>
+    </>
   );
 }
 
