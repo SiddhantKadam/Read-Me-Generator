@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Read-Me-Generator/static/css/main.7d05cbfa.css",
+    "main.js": "/Read-Me-Generator/static/js/main.446baf4d.js",
+    "static/js/453.b0fec5e5.chunk.js": "/Read-Me-Generator/static/js/453.b0fec5e5.chunk.js",
+    "index.html": "/Read-Me-Generator/index.html",
+    "main.7d05cbfa.css.map": "/Read-Me-Generator/static/css/main.7d05cbfa.css.map",
+    "main.446baf4d.js.map": "/Read-Me-Generator/static/js/main.446baf4d.js.map",
+    "453.b0fec5e5.chunk.js.map": "/Read-Me-Generator/static/js/453.b0fec5e5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7d05cbfa.css",
+    "static/js/main.446baf4d.js"
+  ]
+}
