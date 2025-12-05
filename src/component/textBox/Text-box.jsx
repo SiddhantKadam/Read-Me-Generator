@@ -2,7 +2,7 @@ import "./Text-box.css";
 
 const TextBox = ({ icon, name, value, onChange, placeholder, required }) => {
     return (
-        <div className="flex mt-7" style={{ borderBottom: "2px solid #81fdff", position: "relative" }}>
+        <div className="flex" style={{ borderBottom: "2px solid #81fdff", position: "relative" }}>
             <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                 <img src={`${process.env.PUBLIC_URL}/icons/${icon}`} className="w-10 h-10" />
             </span>

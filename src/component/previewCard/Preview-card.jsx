@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import "./Preview-card.css";
 import Aurora from "../templates/aurora/aurora";
 import Ethereal from "../templates/ethereal/ethereal";
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const PreviewCard = ({ heading, thumbnail }) => {
 
     // Modal
-    const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -26,7 +26,7 @@ const PreviewCard = ({ heading, thumbnail }) => {
 
     return (
         <div className="ag-courses_item">
-            <a href="" className="ag-courses-item_link">
+            <a className="ag-courses-item_link">
                 <div className="ag-courses-item_bg"></div>
                 <div className="ag-courses-item_title">
                     {heading}
@@ -45,12 +45,12 @@ const PreviewCard = ({ heading, thumbnail }) => {
 
                 {thumbnail && (
                     <div className="flex ag-courses-item_date-box mt-4">
-                        <button
+                        <button type="button"
                             onClick={openModal}
                             className="primary-button flex pr-6 pl-3 py-2 font-semibold w-32"
                         >
                             <img
-                                src={`../icons/eye.png`}
+                                src={`${process.env.PUBLIC_URL}/icons/eye.png`}
                                 className="w-5 h-5 mr-2 mt-1"
                                 alt="Preview Icon"
                             />
@@ -58,7 +58,7 @@ const PreviewCard = ({ heading, thumbnail }) => {
                         </button>
                         <button className="primary-button flex pr-6 pl-3 py-2 mx-4 font-semibold w-32" onClick={handleGenerateTemplate}>
                             <img
-                                src={`../icons/touchscreen.png`}
+                                src={`${process.env.PUBLIC_URL}/icons/touchscreen.png`}
                                 className="w-5 h-5 mr-2 mt-1"
                                 alt="Select Icon"
                             />

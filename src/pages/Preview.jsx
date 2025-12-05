@@ -9,13 +9,13 @@ const Preview = () => {
       <div className="grid grid-cols-4 gap-4 mt-4">
         <div className="grid grid-cols-2 col-span-3 ...">
 
-          <PreviewCard heading="Aurora" thumbnail={"../images/template-1.png"} />
+          <PreviewCard heading="Aurora" thumbnail={`${process.env.PUBLIC_URL}/images/template-1.png`} />
 
           <PreviewCard heading={"Ethereal"} thumbnail={""} />
 
         </div>
         <div>
-          <img src="../images/freepik__modern-style-detailled-illustration-a-teen-girl-is__20119.jpeg" />
+          <img src={`${process.env.PUBLIC_URL}/images/theme.png`} />
         </div>
 
       </div>

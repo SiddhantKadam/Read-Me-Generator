@@ -1,9 +1,9 @@
 import "./Select-Dropdown.css";
 
-const SelectDropdown = ({ icon, label, required, options, value, onChange }) => {
+const SelectDropdown = ({ icon, label, required, options, value, onChange, name }) => {
     return (
         <div
-            className="flex mt-7"
+            className="flex"
             style={{ borderBottom: "2px solid #81fdff", position: "relative" }}
         >
             {/* Icon Box */}
@@ -15,7 +15,8 @@ const SelectDropdown = ({ icon, label, required, options, value, onChange }) => 
             <select
                 className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={onChange}
+                name={name}
             >
                 <option value="" disabled>
                     Select {label} {required ? "*" : ""}

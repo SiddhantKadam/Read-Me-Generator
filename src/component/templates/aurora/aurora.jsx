@@ -3,7 +3,7 @@ import "./aurora.css"
 const Aurora = () => {
     return (
         <div>
-            <img src="../images/aurora-preview.png" alt="streak graph" />
+            <img src={`${process.env.PUBLIC_URL}/images/aurora-preview.png`} />
         </div>
     )
 }
