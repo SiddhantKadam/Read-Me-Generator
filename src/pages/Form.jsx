@@ -145,9 +145,9 @@ const Form = () => {
         if (!data.aboutMe) {
             formIsValid = false;
             newErrors.aboutMe = 'About section is required';
-        } else if (data.aboutMe?.trim().length > 500) {
+        } else if (data.aboutMe?.trim().length > 1000) {
             formIsValid = false;
-            newErrors.aboutMe = 'Maximun 500 characters allowed';
+            newErrors.aboutMe = 'Maximun 1000 characters allowed';
         }
 
         // Email
@@ -166,18 +166,18 @@ const Form = () => {
         if ((data.portfolio) && (!urlRegex.test(data.portfolio))) {
             formIsValid = false;
             newErrors.portfolio = 'Invalid URL';
-        } else if (data.portfolio?.trim().length > 50) {
+        } else if (data.portfolio?.trim().length > 100) {
             formIsValid = false;
-            newErrors.portfolio = 'Maximun 50 characters allowed';
+            newErrors.portfolio = 'Maximun 100 characters allowed';
         }
 
         // Resume
         if ((data.resume) && (!urlRegex.test(data.resume))) {
             formIsValid = false;
             newErrors.resume = 'Invalid URL';
-        } else if (data.resume?.trim().length > 50) {
+        } else if (data.resume?.trim().length > 100) {
             formIsValid = false;
-            newErrors.resume = 'Maximun 50 characters allowed';
+            newErrors.resume = 'Maximun 100 characters allowed';
         }
 
         // Learning Skills
@@ -293,88 +293,126 @@ const Form = () => {
         if (!data.gitHub?.trim()) {
             formIsValid = false;
             newErrors.gitHub = 'Github is required';
-        } 
-        // else if (!validateGithubUrl(data.gitHub)) {
-        //     formIsValid = false;
-        //     newErrors.gitHub = 'Enter a valid GitHub profile URL';
-        // }
+        } else if (!validateGithubUrl(data.gitHub)) {
+            formIsValid = false;
+            newErrors.gitHub = 'Enter valid GitHub profile (e.g., SiddhantKadam)';
+        }
 
         // Twitter
         if (data.twitter?.trim().length > 50) {
             formIsValid = false;
             newErrors.twitter = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.twitter)) {
+            formIsValid = false;
+            newErrors.twitter = 'Enter valid X profile (e.g., siddhantk98)';
         }
 
         // medium
         if (data.medium?.trim().length > 50) {
             formIsValid = false;
             newErrors.medium = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.medium)) {
+            formIsValid = false;
+            newErrors.medium = 'Enter valid Medium profile (e.g., siddhantk951)';
         }
 
         // codepen
         if (data.codepen?.trim().length > 50) {
             formIsValid = false;
             newErrors.codepen = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.codepen)) {
+            formIsValid = false;
+            newErrors.codepen = 'Enter valid Codepen profile (e.g., Siddhant98)';
         }
 
         // linkdin
         if (data.linkdin?.trim().length > 50) {
             formIsValid = false;
             newErrors.linkdin = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.linkdin)) {
+            formIsValid = false;
+            newErrors.linkdin = 'Enter valid linkdIn profile (e.g., siddhant-kadam-2883821a1)';
         }
 
         // devTo
         if (data.devTo?.trim().length > 50) {
             formIsValid = false;
             newErrors.devTo = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.devTo)) {
+            formIsValid = false;
+            newErrors.devTo = 'Enter valid dev profile (e.g., siddhant98)';
         }
 
         // codeSandBox
         if (data.codeSandBox?.trim().length > 50) {
             formIsValid = false;
             newErrors.codeSandBox = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.codeSandBox)) {
+            formIsValid = false;
+            newErrors.codeSandBox = 'Enter valid dev profile (e.g., siddhant98)';
         }
 
         // stackOverflow
         if (data.stackOverflow?.trim().length > 50) {
             formIsValid = false;
             newErrors.stackOverflow = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.stackOverflow)) {
+            formIsValid = false;
+            newErrors.stackOverflow = 'Enter valid stack overflow profile (e.g., 32008961/siddhant-kadam)';
         }
 
         // leetCode
         if (data.leetCode?.trim().length > 50) {
             formIsValid = false;
             newErrors.leetCode = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.leetCode)) {
+            formIsValid = false;
+            newErrors.leetCode = 'Enter valid leetCode profile (e.g., siddhantk951)';
         }
 
         // behance
         if (data.behance?.trim().length > 50) {
             formIsValid = false;
             newErrors.behance = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.behance)) {
+            formIsValid = false;
+            newErrors.behance = 'Enter valid behance profile (e.g., siddhantkadam8)';
         }
 
         // Facebook
         if (data.facebook?.trim().length > 50) {
             formIsValid = false;
             newErrors.facebook = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.facebook)) {
+            formIsValid = false;
+            newErrors.facebook = 'Enter valid facebook profile (e.g., siddhant.kadam)';
         }
 
         // Instagram
         if (data.instagram?.trim().length > 50) {
             formIsValid = false;
             newErrors.instagram = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.instagram)) {
+            formIsValid = false;
+            newErrors.instagram = 'Enter valid instagram profile (e.g., igl_elijah)';
         }
 
         // YouTube
         if (data.youTube?.trim().length > 50) {
             formIsValid = false;
             newErrors.youTube = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.youTube)) {
+            formIsValid = false;
+            newErrors.youTube = 'Enter valid youTube profile (e.g., elijah-game-zone)';
         }
 
         // discord
         if (data.discord?.trim().length > 50) {
             formIsValid = false;
             newErrors.discord = 'Maximun 50 characters allowed';
+        } else if (!validateGithubUrl(data.discord)) {
+            formIsValid = false;
+            newErrors.discord = 'Enter valid discord profile (e.g., igl_elijah)';
         }
 
         setErrors(newErrors);
@@ -382,9 +420,26 @@ const Form = () => {
     };
 
     const validateGithubUrl = (url) => {
-        const githubRegex = /^(https?:\/\/)?(www\.)?github\.com\/(?!-)(?!.*--)[A-Za-z0-9-]{1,39}(?<!-)\/?$/;
-        return githubRegex.test(url);
+        if (!url) return false;
+
+        const value = url.trim();
+
+        // ❌ Reject if input contains URL-like patterns or slashes
+        if (
+            value.includes("http") ||
+            value.includes("www.") ||
+            value.includes("/")
+        ) {
+            return false;
+        }
+
+        // ✔️ Allow only plain GitHub usernames
+        const usernameRegex = /^[a-zA-Z0-9._-]{1,39}$/;
+        // (GitHub usernames max length = 39)
+
+        return usernameRegex.test(value);
     };
+
 
     const isCertRowFilled = (cert) => {
         return Object.values(cert).some(value => value?.trim() !== "");
@@ -570,11 +625,11 @@ const Form = () => {
                 {/* Connect with me */}
                 <div className="grid grid-cols-3 gap-1 mb-6">
                     <div>
-                        <TextBox icon="skill-development.png" placeholder="I'm building my skills in e.g, Java" value={formData.learningSkills} name={"learningSkills"} onChange={handleChange} />
+                        <TextBox icon="skill-development.png" placeholder="I'm building my skills in e.g, Java, React (use comma)" value={formData.learningSkills} name={"learningSkills"} onChange={handleChange} />
                         {errors.learningSkills && <span className="errorMsg">{errors.learningSkills}</span>}
                     </div>
                     <div>
-                        <TextBox icon="network.png" placeholder="Feel free to reach out to me regarding e.g., Python, ReactJS" value={formData.skilledIn} name={"skilledIn"} onChange={handleChange} />
+                        <TextBox icon="network.png" placeholder="Feel free to reach out to me regarding e.g., Python, ReactJS (use comma)" value={formData.skilledIn} name={"skilledIn"} onChange={handleChange} />
                         {errors.skilledIn && <span className="errorMsg">{errors.skilledIn}</span>}
                     </div>
                 </div>
@@ -932,13 +987,12 @@ const Form = () => {
                 </ul>
 
                 <div className="grid grid-cols-3 gap-1 mt-5">
-                    <div>
+                    {/* <div>
                         <div className="flex items-center gap-4">
                             <h6 className="font-semibold mt-3 mb-3 text-white">Select GIF:</h6>
                             <button type="button" onClick={prevGif}
                                 style={{ borderRadius: "15px", border: "1px solid #81fdff", padding: "4px 8px", backgroundColor: "transparent", color: "#fff", fontWeight: "600" }}
                             >⏴</button>
-                            {/* Selected GIF Display */}
                             <div className="w-32 h-32 rounded-lg overflow-hidden border-4 border-gray-300 shadow-md">
                                 <img
                                     src={gifs[currentIndex].src}
@@ -961,7 +1015,7 @@ const Form = () => {
                             </button>
 
                         </div>
-                    </div>
+                    </div> */}
                     <div>
                         <TextBox icon="gif.png" placeholder="Custom GIF e.g., ...computer.gif" value={formData.gifLink} name={"gifLink"} onChange={handleChange} />
                     </div>

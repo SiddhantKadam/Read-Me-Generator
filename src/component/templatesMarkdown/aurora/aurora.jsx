@@ -7,9 +7,7 @@ const Aurora = () => {
 
     return (
         `<div>
-            <h1>I'm ${formData.title ? formData.title : ""} ${formData.name ? formData.name : ""} <br/>
-              <span style="font-size: 20px">${formData.workTitle ? formData.workTitle : ""}</span>
-            </h1>
+            <h1>I'm ${formData.title || ""} ${formData.name || ""}, ${formData.workTitle || ""}</h1>
             ${formData.selectedAddOns.includes("count") && `<img src="https://komarev.com/ghpvc/?username=${formData.gitHub}&style=for-the-badge&label=Profile%20Views&labelColor=black&color=red" align="right" />`}
 
             <p style="color: red;">${formData.aboutMe ? formData.aboutMe : ""}</p>
@@ -30,11 +28,14 @@ const Aurora = () => {
         }
             </p>
 
-            <p style="font-style: italic;font-weight: bold">${formData.quote || ""}</p>
+            <p>
+                <img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/april-fools-day.png?raw=true" alt="certification" height="40" width="40" />
+                ${formData.quote}
+            </p>
 
             <hr />
 
-            <img align="right" style="width: 250px" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXF1cTNwbWU3MzRsa3dybWV0ZmRyaG9mYW1qdTVkY2Nncmtud3ZzbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/78XCFBGOlS6keY1Bil/giphy.gif" />
+            <img align="right" style="width: 250px" src="${formData.gifLink}" />
 
             ${(formData.currentProjectName || formData.currentProjectLink) ? `
             <p>
@@ -100,7 +101,7 @@ const Aurora = () => {
             <h3 align="left" style="margin-left: 15px;">Certifications</h3>
             <div style="margin-left: 15px;">
   ${formData.certifications
-    .map((certificate) => `
+            .map((certificate) => `
     <div style="margin-bottom: 15px;">
         <div style="display: flex; justify-content: space-between; width: 100%;">
             <!-- Left Side -->
@@ -121,21 +122,21 @@ const Aurora = () => {
         <span>${certificate.description || ""}</span> 
     </div>
         `
-        ).join("")}
+            ).join("")}
         </div>
 
 
 
             <h3 align="left" style="margin-left: 15px;">Feel free to reach out:</h3>
             <p align="left">
-            ${formData.linkdin ? `<a href="https://linkedin.com/in/linkedin.com/in/${formData.linkdin}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/linkedin.png?raw=true" alt="linkedin" height="40" width="40" /></a>` : ""}
+            ${formData.linkdin ? `<a href="https://linkedin.com/in/${formData.linkdin}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/linkedin.png?raw=true" alt="linkedin" height="40" width="40" /></a>` : ""}
             ${formData.codepen ? `<a href="https://codepen.com/${formData.codepen}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/codepen.svg?raw=true" alt="codepen" height="40" width="40" /></a>` : ""}
-            ${formData.medium ? `<a href="https://medium.com/${formData.medium} ? " target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/medium.png?raw=true" alt="medium" height="40" width="40" /></a>` : ""}
-            ${formData.devTo ? `<a href="https://devTo.com/${formData.devTo}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/dev.png?raw=true" alt="dev" height="40" width="40" /></a>` : ""}
-            ${formData.codeSandBox ? `<a href="https://codeSandBox.com/${formData.codeSandBox}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/code-sandbox.svg?raw=true" alt="code-sandbox" height="40" width="40" /></a>` : ""}
-            ${formData.stackOverflow ? `<a href="https://stackOverflow.com/${formData.stackOverflow}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/stackoverflow.png?raw=true" alt="stackoverflow" height="40" width="40" /></a>` : ""}
+            ${formData.medium ? `<a href="https://medium.com/@${formData.medium} ? " target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/medium.png?raw=true" alt="medium" height="40" width="40" /></a>` : ""}
+            ${formData.devTo ? `<a href="https://dev.to/${formData.devTo}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/dev.png?raw=true" alt="dev" height="40" width="40" /></a>` : ""}
+            ${formData.codeSandBox ? `<a href="https://codesandbox.io/u/${formData.codeSandBox}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/code-sandbox.svg?raw=true" alt="code-sandbox" height="40" width="40" /></a>` : ""}
+            ${formData.stackOverflow ? `<a href="https://stackOverflow.com/users/32008961/${formData.stackOverflow}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/stackoverflow.png?raw=true" alt="stackoverflow" height="40" width="40" /></a>` : ""}
             ${formData.leetCode ? `<a href="https://leetCode.com/${formData.leetCode}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/leetcode.svg?raw=true" alt="leetcode" height="40" width="40" /></a>` : ""}
-            ${formData.behance ? `<a href="https://behance.com/${formData.behance}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/behance.png?raw=true" alt="behance" height="40" width="40" /></a>` : ""}
+            ${formData.behance ? `<a href="https://behance.net/${formData.behance}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/behance.png?raw=true" alt="behance" height="40" width="40" /></a>` : ""}
             ${formData.discord ? `<a href="https://discord.com/${formData.discord}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/discord.png?raw=true" alt="discord" height="40" width="40" /></a>` : ""}
             </p>
 
@@ -145,9 +146,9 @@ const Aurora = () => {
             ${formData.selectedAddOns.includes("trophy") ? `<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=siddhantkadam" alt="siddhantkadam" /></a> </p> ` : ""}
 
             <p>
-            ${formData.selectedAddOns.includes("skills") ? `<img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=${formData.gitHub}&show_icons=true&locale=en&layout=compact" alt="${formData.gitHub}" />` : ""}
+            <!-- ${formData.selectedAddOns.includes("skills") ? `<img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=${formData.gitHub}&show_icons=true&locale=en&layout=compact" alt="${formData.gitHub}" />` : ""} -->
 
-            ${formData.selectedAddOns.includes("stats") ? `<img align="center" src="https://github-readme-stats.vercel.app/api?username=${formData.gitHub}&show_icons=true&locale=en" alt="${formData.gitHub}" />` : ""}
+            <!-- ${formData.selectedAddOns.includes("stats") ? `<img align="center" src="https://github-readme-stats.vercel.app/api?username=${formData.gitHub}&show_icons=true&locale=en" alt="${formData.gitHub}" />` : ""} -->
 
             ${formData.selectedAddOns.includes("streak") ? `<img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=${formData.gitHub}&" alt="${formData.gitHub}" />` : ""}
             </p> 
