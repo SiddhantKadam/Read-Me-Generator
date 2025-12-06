@@ -29,8 +29,8 @@ const Aurora = () => {
             </p>
 
             <p>
-                <img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/april-fools-day.png?raw=true" alt="certification" height="40" width="40" />
-                ${formData.quote}
+                <img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/star.png?raw=true" alt="certification" height="20" width="20" />
+                <strong><em>${formData.quote}</em></strong>
             </p>
 
             <hr />
