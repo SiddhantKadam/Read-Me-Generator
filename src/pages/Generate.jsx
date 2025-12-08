@@ -26,6 +26,7 @@ const Generate = () => {
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
                     setMessage("copy");
+                    setTimeout(() => setMessage(""), 1500); // Reset after 1.5 sec
                 })
                 .catch((error) => {
                     console.error("Failed to copy content:", error);
@@ -55,7 +56,8 @@ const Generate = () => {
     return (
         <div>
             <Toaster message={message} />
-            <div className='grid grid-cols-4'>
+            <div className='grid grid-cols-4 min-h-screen'>
+                {/* Left side: 3 columns */}
                 <div className='col-span-3'>
                     <div className="flex justify-between items-center w-full">
                         <button className="primary-button flex items-center justify-center pr-6 pl-3 py-2 font-semibold w-60" onClick={handleBackToEdit}>
@@ -64,17 +66,17 @@ const Generate = () => {
                         </button>
 
                         <button className="primary-button flex items-center justify-center pr-6 pl-3 py-2 font-semibold w-60" onClick={handleCopy}>
-                            <img src={`${process.env.PUBLIC_URL}/icons/downloading.png`} className="w-5 h-5 mr-2" alt="Preview Icon" />
+                            <img src={`${process.env.PUBLIC_URL}/icons/link.png`} className="w-5 h-5 mr-2" alt="Preview Icon" />
                             Copy code
                         </button>
 
                         <button className="primary-button flex items-center justify-center pr-6 pl-3 py-2 font-semibold w-60" onClick={handleDownload}>
-                            <img src={`${process.env.PUBLIC_URL}/icons/link.png`} className="w-5 h-5 mr-2" alt="Preview Icon" />
+                            <img src={`${process.env.PUBLIC_URL}/icons/downloading.png`} className="w-5 h-5 mr-2" alt="Preview Icon" />
                             Download code
                         </button>
                     </div>
 
-                    <div className='mt-6'>
+                    <div className='mt-6 border rounded-xl mb-4 dark:bg-gray-800 text-white'>
                         <Card>
                             <div ref={contentRef}>
                                 {generateHeading === "Aurora" && <Aurora />}
@@ -83,12 +85,14 @@ const Generate = () => {
                             </div>
                         </Card>
                     </div>
-
                 </div>
-                <div className='pt-5 text-center'>
-                    <img className='mt-5' src="https://media.giphy.com/media/4IyfwJfx1WEGEIxSw6/giphy.gif?cid=ecf05e47fyhbr737guzwofq9z0gc9gu5xcnld79pjmrw9o9s&ep=v1_stickers_search&rid=giphy.gif&ct=ts" />
+
+                {/* Right side: 1 column, vertically centered */}
+                <div className="flex justify-center items-center">
+                    <img src="https://static.skusavvy.com/3d35e77a-6449-4448-bc92-258ccd41ac72.gif" alt="centered gif" className="max-h-screen" />
                 </div>
             </div>
+
         </div>
     )
 }

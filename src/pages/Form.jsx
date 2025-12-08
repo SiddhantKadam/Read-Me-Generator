@@ -6,6 +6,7 @@ import IconCheckbox from "../component/iconCheckbox/Icon-checkbox.jsx";
 import { skillsData } from "../config/constants/icons.js";
 import { addOnsData } from "../config/constants/add-ons.js";
 import Toaster from "../component/toaster/toaster.jsx";
+import Calender from "../component/calender/Calender.js";
 
 const allSkills = skillsData;
 
@@ -46,8 +47,6 @@ const Form = () => {
         medium: "",
         codepen: "",
         devTo: "",
-        codeSandBox: "",
-        stackOverflow: "",
         leetCode: "",
         behance: "",
         discord: "",
@@ -93,9 +92,22 @@ const Form = () => {
     // Set data from localStorage
     useEffect(() => {
         const savedData = localStorage.getItem("formData");
+
         if (savedData) {
-            setFormData(JSON.parse(savedData));
+            const parsed = JSON.parse(savedData);
+
+            // Fix dates for each certification
+            if (Array.isArray(parsed.certifications)) {
+                parsed.certifications = parsed.certifications.map(cert => ({
+                    ...cert,
+                    issueDate: cert.issueDate ? cert.issueDate : "",
+                    expiryDate: cert.expiryDate ? cert.expiryDate : ""
+                }));
+            }
+
+            setFormData(parsed);
         }
+
     }, []);
 
     const saveData = (e) => {
@@ -133,6 +145,7 @@ const Form = () => {
             newErrors.title = 'Title is required';
         }
 
+        // Work Title
         if (!data.workTitle?.trim()) {
             formIsValid = false;
             newErrors.workTitle = 'Work title is required';
@@ -343,24 +356,6 @@ const Form = () => {
             newErrors.devTo = 'Enter valid dev profile (e.g., siddhant98)';
         }
 
-        // codeSandBox
-        if (data.codeSandBox?.trim().length > 50) {
-            formIsValid = false;
-            newErrors.codeSandBox = 'Maximun 50 characters allowed';
-        } else if (!validateGithubUrl(data.codeSandBox)) {
-            formIsValid = false;
-            newErrors.codeSandBox = 'Enter valid dev profile (e.g., siddhant98)';
-        }
-
-        // stackOverflow
-        if (data.stackOverflow?.trim().length > 50) {
-            formIsValid = false;
-            newErrors.stackOverflow = 'Maximun 50 characters allowed';
-        } else if (!validateGithubUrl(data.stackOverflow)) {
-            formIsValid = false;
-            newErrors.stackOverflow = 'Enter valid stack overflow profile (e.g., 32008961/siddhant-kadam)';
-        }
-
         // leetCode
         if (data.leetCode?.trim().length > 50) {
             formIsValid = false;
@@ -525,36 +520,6 @@ const Form = () => {
     };
     // Add certificates
 
-    // GIF
-    const gifs = [
-        { id: 0, src: "https://cdn-icons-gif.flaticon.com/9696/9696871.gif" },
-        { id: 1, src: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZTY2NHRmZzkwYzNucm15ankycXFpNTEwOWdocjl5MnMyY3l0dnR3ZSZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/tOFKFDbeh9V7y/giphy.gif" },
-        { id: 2, src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2xubGFhaDI5aDlqczcwd2Q5amI5dHF6eXE0eXhmbnNneDlzaHVjMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xThuWu82QD3pj4wvEQ/giphy.gif" },
-        { id: 3, src: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2RvOG5ycHA3OG12ZTMxazR3ZXk5Z3lkMWlncGQ3OWgyNjY5MWU2ayZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/jUZmz3kAiAuLC/giphy.gif" }
-        // { id: 4, src: "https://media.tenor.com/2roX3uxz_68AAAAC/cat-computer.gif" },
-        // { id: 5, src: "https://media.tenor.com/nebZyl8vQZsAAAAM/coding-typing.gif" },
-        // { id: 6, src: "https://media.tenor.com/Fi5zqS4WCSCwAAAAM/yes-happy.gif" },
-        // { id: 7, src: "https://media.tenor.com/IHdlTRsmcS4AAAAM/programming-computer.gif" },
-        // { id: 8, src: "https://media.tenor.com/BpcvHgKudfIAAAAM/workout-gym.gif" },
-        // { id: 9, src: "https://media.tenor.com/eW-Dm1n06TgAAAAM/thumbs-up-okay.gif" },
-        // { id: 10, src: "https://media.tenor.com/p4zvN3kCXbIAAAAM/party-happy.gif" }
-    ];
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const nextGif = () => {
-        setCurrentIndex((prev) => (prev + 1) % gifs.length);
-    };
-
-    const prevGif = () => {
-        setCurrentIndex((prev) => (prev - 1 + gifs.length) % gifs.length);
-    };
-
-    const clearGifSelection = () => {
-        setCurrentIndex(0);
-    };
-    // GIF
-
     return (
         <div>
             <Toaster message={message} />
@@ -567,7 +532,7 @@ const Form = () => {
                 </div>
                 <hr />
 
-                <div className="grid grid-cols-2 gap-1 mt-3">
+                <div className="grid grid-cols-2 gap-1 mt-3 border p-4 rounded-xl mb-4 bg-gray-50 dark:bg-gray-800">
                     <div>
                         <div className="grid grid-cols-3 gap-1">
                             <div className="col-span-1 mb-5">
@@ -603,85 +568,87 @@ const Form = () => {
                     </div>
                 </div>
 
-                <h6 className="primary-color font-semibold text-3xl mt-6 mb-3">About myself</h6>
+                {/* About Me */}
+                <h6 className="primary-color font-semibold text-3xl mb-3 mt-10">About myself</h6>
                 <hr></hr>
-
-                {/* About me */}
-                <div className="grid grid-cols-3 gap-1 mt-6 mb-6">
-                    <div>
-                        <TextBox icon="email.png" placeholder="Connect with me here e.g., siddhantk951@gmail.com" value={formData.email} name={"email"} onChange={handleChange} />
-                        {errors.email && <span className="errorMsg">{errors.email}</span>}
-                    </div>
-                    <div>
-                        <TextBox icon="briefcase.png" placeholder="Take a look at my portfolio e.g., www.siddhantportfolio.site" value={formData.portfolio} name={"portfolio"} onChange={handleChange} />
-                        {errors.portfolio && <span className="errorMsg">{errors.portfolio}</span>}
-                    </div>
-                    <div>
-                        <TextBox icon="personal-profile.png" placeholder="Resume link e.g., www.johndoeresume.com" value={formData.resume} name={"resume"} onChange={handleChange} />
-                        {errors.resume && <span className="errorMsg">{errors.resume}</span>}
-                    </div>
-                </div>
-
-                {/* Connect with me */}
-                <div className="grid grid-cols-3 gap-1 mb-6">
-                    <div>
-                        <TextBox icon="skill-development.png" placeholder="I'm building my skills in e.g, Java, React (use comma)" value={formData.learningSkills} name={"learningSkills"} onChange={handleChange} />
-                        {errors.learningSkills && <span className="errorMsg">{errors.learningSkills}</span>}
-                    </div>
-                    <div>
-                        <TextBox icon="network.png" placeholder="Feel free to reach out to me regarding e.g., Python, ReactJS (use comma)" value={formData.skilledIn} name={"skilledIn"} onChange={handleChange} />
-                        {errors.skilledIn && <span className="errorMsg">{errors.skilledIn}</span>}
-                    </div>
-                </div>
-
-                {/* Current project */}
-                <div className="grid grid-cols-2 gap-1">
-                    <div>
-                        <div className="mb-6">
-                            <TextBox icon="contribution.png" placeholder="Currently I'm contributing in e.g, Project name" value={formData.currentProjectName} name={"currentProjectName"} onChange={handleChange} />
-                            {errors.currentProjectName && <span className="errorMsg">{errors.currentProjectName}</span>}
-                        </div>
-                        <div className="mb-6">
-                            <TextBox icon="contribution.png" placeholder="Project link e.g, www.chatbot.com" value={formData.currentProjectLink} name={"currentProjectLink"} onChange={handleChange} />
-                            {errors.currentProjectLink && <span className="errorMsg">{errors.currentProjectLink}</span>}
-                        </div>
-                    </div>
-                    <div>
-                        <div className="flex mb-6" style={{ borderBottom: "2px solid #81fdff" }}>
-                            <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                                <img src={`${process.env.PUBLIC_URL}/icons/description.png`} className="w-10 h-10" />
-                            </span>
-                            <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="currentProjectDecription" value={formData.currentProjectDecription} rows="6" cols="60" placeholder="Project description" onChange={handleChange}></textarea>
-                        </div>
-                        {errors.currentProjectDecription && <span className="errorMsg">{errors.currentProjectDecription}</span>}
-                    </div>
-                </div>
-
-                {/* Collaborate project */}
-                <div className="grid grid-cols-2 gap-1">
-                    <div>
-                        <div className="mb-6">
-                            <TextBox icon="interested.png" placeholder="I'm interested in contributing to e.g, Project name" value={formData.interestedProjectName} name={"interestedProjectName"} onChange={handleChange} />
-                            {errors.interestedProjectName && <span className="errorMsg">{errors.interestedProjectName}</span>}
+                <div className="border p-4 rounded-xl mb-4 bg-gray-50 dark:bg-gray-800 mt-3">
+                    {/* About me */}
+                    <div className="grid grid-cols-3 gap-1 mt-6 mb-6">
+                        <div>
+                            <TextBox icon="email.png" placeholder="Connect with me here e.g., siddhantk951@gmail.com" value={formData.email} name={"email"} onChange={handleChange} />
+                            {errors.email && <span className="errorMsg">{errors.email}</span>}
                         </div>
                         <div>
-                            <TextBox icon="interested.png" placeholder="Project link e.g, www.facebook.com" value={formData.interestedProjectLink} name={"interestedProjectLink"} onChange={handleChange} />
-                            {errors.interestedProjectLink && <span className="errorMsg">{errors.interestedProjectLink}</span>}
+                            <TextBox icon="briefcase.png" placeholder="Take a look at my portfolio e.g., www.siddhantportfolio.site" value={formData.portfolio} name={"portfolio"} onChange={handleChange} />
+                            {errors.portfolio && <span className="errorMsg">{errors.portfolio}</span>}
+                        </div>
+                        <div>
+                            <TextBox icon="personal-profile.png" placeholder="Resume link e.g., www.johndoeresume.com" value={formData.resume} name={"resume"} onChange={handleChange} />
+                            {errors.resume && <span className="errorMsg">{errors.resume}</span>}
                         </div>
                     </div>
-                    <div>
-                        <div className="flex" style={{ borderBottom: "2px solid #81fdff" }}>
-                            <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                                <img src={`${process.env.PUBLIC_URL}/icons/description.png`} className="w-10 h-10" />
-                            </span>
-                            <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="interestedProjectDescription" value={formData.interestedProjectDescription} rows="6" cols="60" placeholder="Interested Project description" onChange={handleChange}></textarea>
+
+                    {/* Connect with me */}
+                    <div className="grid grid-cols-3 gap-1 mb-6">
+                        <div>
+                            <TextBox icon="skill-development.png" placeholder="I'm building my skills in e.g, Java, React (use comma)" value={formData.learningSkills} name={"learningSkills"} onChange={handleChange} />
+                            {errors.learningSkills && <span className="errorMsg">{errors.learningSkills}</span>}
                         </div>
-                        {errors.interestedProjectDescription && <span className="errorMsg">{errors.interestedProjectDescription}</span>}
+                        <div>
+                            <TextBox icon="network.png" placeholder="Feel free to reach out to me regarding e.g., Python, ReactJS (use comma)" value={formData.skilledIn} name={"skilledIn"} onChange={handleChange} />
+                            {errors.skilledIn && <span className="errorMsg">{errors.skilledIn}</span>}
+                        </div>
+                    </div>
+
+                    {/* Current project */}
+                    <div className="grid grid-cols-2 gap-1">
+                        <div>
+                            <div className="mb-6">
+                                <TextBox icon="contribution.png" placeholder="Currently I'm contributing in e.g, Project name" value={formData.currentProjectName} name={"currentProjectName"} onChange={handleChange} />
+                                {errors.currentProjectName && <span className="errorMsg">{errors.currentProjectName}</span>}
+                            </div>
+                            <div className="mb-6">
+                                <TextBox icon="contribution.png" placeholder="Project link e.g, www.chatbot.com" value={formData.currentProjectLink} name={"currentProjectLink"} onChange={handleChange} />
+                                {errors.currentProjectLink && <span className="errorMsg">{errors.currentProjectLink}</span>}
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex mb-6" style={{ borderBottom: "2px solid #81fdff" }}>
+                                <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <img src={`${process.env.PUBLIC_URL}/icons/description.png`} className="w-10 h-10" />
+                                </span>
+                                <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="currentProjectDecription" value={formData.currentProjectDecription} rows="6" cols="60" placeholder="Project description" onChange={handleChange}></textarea>
+                            </div>
+                            {errors.currentProjectDecription && <span className="errorMsg">{errors.currentProjectDecription}</span>}
+                        </div>
+                    </div>
+
+                    {/* Collaborate project */}
+                    <div className="grid grid-cols-2 gap-1">
+                        <div>
+                            <div className="mb-6">
+                                <TextBox icon="interested.png" placeholder="I'm interested in contributing to e.g, Project name" value={formData.interestedProjectName} name={"interestedProjectName"} onChange={handleChange} />
+                                {errors.interestedProjectName && <span className="errorMsg">{errors.interestedProjectName}</span>}
+                            </div>
+                            <div>
+                                <TextBox icon="interested.png" placeholder="Project link e.g, www.facebook.com" value={formData.interestedProjectLink} name={"interestedProjectLink"} onChange={handleChange} />
+                                {errors.interestedProjectLink && <span className="errorMsg">{errors.interestedProjectLink}</span>}
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex" style={{ borderBottom: "2px solid #81fdff" }}>
+                                <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <img src={`${process.env.PUBLIC_URL}/icons/description.png`} className="w-10 h-10" />
+                                </span>
+                                <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="interestedProjectDescription" value={formData.interestedProjectDescription} rows="6" cols="60" placeholder="Interested Project description" onChange={handleChange}></textarea>
+                            </div>
+                            {errors.interestedProjectDescription && <span className="errorMsg">{errors.interestedProjectDescription}</span>}
+                        </div>
                     </div>
                 </div>
 
                 {/* Skills */}
-                <div className="flex justify-between items-center mt-6 mb-3">
+                <div className="flex justify-between items-center mt-10 mb-3">
                     {/* Left-aligned heading */}
                     <h6 className="primary-color font-semibold text-3xl">Skills</h6>
 
@@ -703,55 +670,57 @@ const Form = () => {
 
                 <hr />
 
-                {filteredSkills.map((skillCategory) => {
-                    const visibleSkills = showAllSkills
-                        ? skillCategory.array
-                        : skillCategory.array.filter(() => {
-                            totalSkillCount++;
-                            return totalSkillCount <= SKILL_LIMIT;
-                        });
+                <div className="border p-4 rounded-xl mb-4 bg-gray-50 dark:bg-gray-800 mt-3">
+                    {filteredSkills.map((skillCategory) => {
+                        const visibleSkills = showAllSkills
+                            ? skillCategory.array
+                            : skillCategory.array.filter(() => {
+                                totalSkillCount++;
+                                return totalSkillCount <= SKILL_LIMIT;
+                            });
 
-                    return (
-                        visibleSkills.length > 0 && (
-                            <div key={skillCategory.title} className="mt-4">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                                    {skillCategory.title}:
-                                </h3>
+                        return (
+                            visibleSkills.length > 0 && (
+                                <div key={skillCategory.title} className="mt-4">
+                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                                        {skillCategory.title}:
+                                    </h3>
 
-                                <ul className="grid w-full gap-10 md:grid-cols-6">
-                                    {visibleSkills.map((skill) => (
-                                        <li key={skill.id}>
-                                            <IconCheckbox
-                                                id={`${skill.id}-option`}
-                                                name="selectedSkills"
-                                                value={skill.id}
-                                                onChange={handleChange}
-                                                icon={skill.icon}
-                                                checked={formData.selectedSkills.includes(skill.id)}
-                                                label={skill.label}
-                                            />
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )
-                    );
-                })}
+                                    <ul className="grid w-full gap-10 md:grid-cols-6">
+                                        {visibleSkills.map((skill) => (
+                                            <li key={skill.id}>
+                                                <IconCheckbox
+                                                    id={`${skill.id}-option`}
+                                                    name="selectedSkills"
+                                                    value={skill.id}
+                                                    onChange={handleChange}
+                                                    icon={skill.icon}
+                                                    checked={formData.selectedSkills.includes(skill.id)}
+                                                    label={skill.label}
+                                                />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )
+                        );
+                    })}
 
-                <div className="flex justify-center mt-6">
-                    <button type="button"
-                        onClick={() => setShowAllSkills(!showAllSkills)}
-                        style={{ borderRadius: "15px", border: "1px solid #81fdff", padding: "3px 16px", backgroundColor: "transparent", color: "#fff", fontWeight: "600" }}
-                    >
-                        {showAllSkills ? "Show Less ⏶" : "Show More ⏷"}
-                    </button>
+                    <div className="flex justify-center mt-6">
+                        <button type="button"
+                            onClick={() => setShowAllSkills(!showAllSkills)}
+                            style={{ borderRadius: "15px", border: "1px solid #81fdff", padding: "3px 16px", backgroundColor: "transparent", color: "#fff", fontWeight: "600" }}
+                        >
+                            {showAllSkills ? "Show Less ⏶" : "Show More ⏷"}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Certifications */}
-                <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Certifications</h6>
+                <h6 className="primary-color font-semibold text-3xl mt-10 mb-3">Certifications</h6>
                 <hr></hr>
 
-                <div className="mt-6">
+                <div className="mt-3">
 
                     {formData.certifications.map((cert, index) => (
                         <div key={index} className="border p-4 rounded-xl mb-4 bg-gray-50 dark:bg-gray-800">
@@ -783,7 +752,7 @@ const Form = () => {
 
                                 {/* Issue Date */}
                                 <div>
-                                    <TextBox
+                                    <Calender
                                         icon="schedule.png"
                                         placeholder="Issue Date (e.g. June 2024)"
                                         name={`certifications[${index}].issueDate`}
@@ -799,7 +768,7 @@ const Form = () => {
                                     <div className="grid grid-cols-2 gap-1 mb-6">
                                         {/* Expiration Date */}
                                         <div>
-                                            <TextBox
+                                            <Calender
                                                 icon="schedule.png"
                                                 placeholder="Expiration Date (optional)"
                                                 name={`certifications[${index}].expiryDate`}
@@ -884,110 +853,102 @@ const Form = () => {
                 <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Networking</h6>
                 <hr></hr>
 
-                <div className="grid grid-cols-8 gap-8 mt-6 mb-6">
-                    <div className="col-start-2 col-end-5">
-                        <TextBox icon="github.png" placeholder="GitHub e.g., SiddhantKadam" value={formData.gitHub} name={"gitHub"} onChange={handleChange} />
-                        {errors.gitHub && <span className="errorMsg">{errors.gitHub}</span>}
+                <div className="border p-4 rounded-xl mb-4 bg-gray-50 dark:bg-gray-800 mt-6">
+                    <div className="grid grid-cols-8 gap-8 mt-6 mb-6">
+                        <div className="col-start-2 col-end-5">
+                            <TextBox icon="github.png" placeholder="GitHub e.g., SiddhantKadam" value={formData.gitHub} name={"gitHub"} onChange={handleChange} />
+                            {errors.gitHub && <span className="errorMsg">{errors.gitHub}</span>}
+                        </div>
+                        <div className="col-start-5 col-span-3">
+                            <TextBox icon="twitter.png" placeholder="Twitter e.g., siddhantk98" value={formData.twitter} name={"twitter"} onChange={handleChange} />
+                            {errors.twitter && <span className="errorMsg">{errors.twitter}</span>}
+                        </div>
                     </div>
-                    <div className="col-start-5 col-span-3">
-                        <TextBox icon="twitter.png" placeholder="Twitter e.g., siddhantk98" value={formData.twitter} name={"twitter"} onChange={handleChange} />
-                        {errors.twitter && <span className="errorMsg">{errors.twitter}</span>}
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-8 gap-8 mb-6">
-                    <div className="col-start-2 col-end-5">
-                        <TextBox icon="medium.png" placeholder="Medium e.g., @siddhantk951" value={formData.medium} name={"medium"} onChange={handleChange} />
-                        {errors.medium && <span className="errorMsg">{errors.medium}</span>}
+                    <div className="grid grid-cols-8 gap-8 mb-6">
+                        <div className="col-start-2 col-end-5">
+                            <TextBox icon="medium.png" placeholder="Medium e.g., @siddhantk951" value={formData.medium} name={"medium"} onChange={handleChange} />
+                            {errors.medium && <span className="errorMsg">{errors.medium}</span>}
+                        </div>
+                        <div className="col-start-5 col-span-3">
+                            <TextBox icon="codepen.svg" placeholder="Codepen e.g., Siddhant98" value={formData.codepen} name={"codepen"} onChange={handleChange} />
+                            {errors.codepen && <span className="errorMsg">{errors.codepen}</span>}
+                        </div>
                     </div>
-                    <div className="col-start-5 col-span-3">
-                        <TextBox icon="codepen.svg" placeholder="Codepen e.g., Siddhant98" value={formData.codepen} name={"codepen"} onChange={handleChange} />
-                        {errors.codepen && <span className="errorMsg">{errors.codepen}</span>}
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-8 gap-8 mb-6">
-                    <div className="col-start-2 col-end-5">
-                        <TextBox icon="linkedin.png" placeholder="LinkdIn e.g., siddhant-kadam-2883821a1" value={formData.linkdin} name={"linkdin"} onChange={handleChange} />
-                        {errors.linkdin && <span className="errorMsg">{errors.linkdin}</span>}
+                    <div className="grid grid-cols-8 gap-8 mb-6">
+                        <div className="col-start-2 col-end-5">
+                            <TextBox icon="linkedin.png" placeholder="LinkdIn e.g., siddhant-kadam-2883821a1" value={formData.linkdin} name={"linkdin"} onChange={handleChange} />
+                            {errors.linkdin && <span className="errorMsg">{errors.linkdin}</span>}
+                        </div>
+                        <div className="col-start-5 col-span-3">
+                            <TextBox icon="dev.png" placeholder="Dev.to e.g., Siddhant98" value={formData.devTo} name={"devTo"} onChange={handleChange} />
+                            {errors.devTo && <span className="errorMsg">{errors.devTo}</span>}
+                        </div>
                     </div>
-                    <div className="col-start-5 col-span-3">
-                        <TextBox icon="dev.png" placeholder="Dev.to e.g., Siddhant98" value={formData.devTo} name={"devTo"} onChange={handleChange} />
-                        {errors.devTo && <span className="errorMsg">{errors.devTo}</span>}
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-8 gap-8 mb-6">
-                    <div className="col-start-2 col-end-5">
-                        <TextBox icon="code-sandbox.svg" placeholder="Codesandbox e.g., Siddhant98" value={formData.codeSandBox} name={"codeSandBox"} onChange={handleChange} />
-                        {errors.codeSandBox && <span className="errorMsg">{errors.codeSandBox}</span>}
+                    <div className="grid grid-cols-8 gap-8 mb-6">
+                        <div className="col-start-2 col-end-5">
+                            <TextBox icon="leetcode.svg" placeholder="Leetcode e.g., Siddhant98" value={formData.leetCode} name={"leetCode"} onChange={handleChange} />
+                            {errors.leetCode && <span className="errorMsg">{errors.leetCode}</span>}
+                        </div>
+                        <div className="col-start-5 col-span-3">
+                            <TextBox icon="behance.png" placeholder="Behance e.g., Siddhant98" value={formData.behance} name={"behance"} onChange={handleChange} />
+                            {errors.behance && <span className="errorMsg">{errors.behance}</span>}
+                        </div>
                     </div>
-                    <div className="col-start-5 col-span-3">
-                        <TextBox icon="stackoverflow.png" placeholder="Stackoverflow e.g., Siddhant98" value={formData.stackOverflow} name={"stackOverflow"} onChange={handleChange} />
-                        {errors.stackOverflow && <span className="errorMsg">{errors.stackOverflow}</span>}
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-8 gap-8 mb-6">
-                    <div className="col-start-2 col-end-5">
-                        <TextBox icon="leetcode.svg" placeholder="Leetcode e.g., Siddhant98" value={formData.leetCode} name={"leetCode"} onChange={handleChange} />
-                        {errors.leetCode && <span className="errorMsg">{errors.leetCode}</span>}
+                    <div className="grid grid-cols-8 gap-8 mb-6">
+                        <div className="col-start-2 col-end-5">
+                            <TextBox icon="facebook.png" placeholder="Facebook e.g., siddhant.kadam.583" value={formData.facebook} name={"facebook"} onChange={handleChange} />
+                            {errors.facebook && <span className="errorMsg">{errors.facebook}</span>}
+                        </div>
+                        <div className="col-start-5 col-span-3">
+                            <TextBox icon="instagram.png" placeholder="Instagram e.g., igl_elijah" value={formData.instagram} name={"instagram"} onChange={handleChange} />
+                            {errors.instagram && <span className="errorMsg">{errors.instagram}</span>}
+                        </div>
                     </div>
-                    <div className="col-start-5 col-span-3">
-                        <TextBox icon="behance.png" placeholder="Behance e.g., Siddhant98" value={formData.behance} name={"behance"} onChange={handleChange} />
-                        {errors.behance && <span className="errorMsg">{errors.behance}</span>}
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-8 gap-8 mb-6">
-                    <div className="col-start-2 col-end-5">
-                        <TextBox icon="facebook.png" placeholder="Facebook e.g., siddhant.kadam.583" value={formData.facebook} name={"facebook"} onChange={handleChange} />
-                        {errors.facebook && <span className="errorMsg">{errors.facebook}</span>}
-                    </div>
-                    <div className="col-start-5 col-span-3">
-                        <TextBox icon="instagram.png" placeholder="Instagram e.g., igl_elijah" value={formData.instagram} name={"instagram"} onChange={handleChange} />
-                        {errors.instagram && <span className="errorMsg">{errors.instagram}</span>}
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-8 gap-8 mb-6">
-                    <div className="col-start-2 col-end-5">
-                        <TextBox icon="youtube.png" placeholder="Youtube e.g., @elijah-game-zone" value={formData.youTube} name={"youTube"} onChange={handleChange} />
-                        {errors.youTube && <span className="errorMsg">{errors.youTube}</span>}
-                    </div>
-                    <div className="col-start-5 col-span-3">
-                        <TextBox icon="discord.png" placeholder="Discord e.g., igl_elijah" value={formData.discord} name={"discord"} onChange={handleChange} />
-                        {errors.discord && <span className="errorMsg">{errors.discord}</span>}
+                    <div className="grid grid-cols-8 gap-8 mb-6">
+                        <div className="col-start-2 col-end-5">
+                            <TextBox icon="youtube.png" placeholder="Youtube e.g., @elijah-game-zone" value={formData.youTube} name={"youTube"} onChange={handleChange} />
+                            {errors.youTube && <span className="errorMsg">{errors.youTube}</span>}
+                        </div>
+                        <div className="col-start-5 col-span-3">
+                            <TextBox icon="discord.png" placeholder="Discord e.g., igl_elijah" value={formData.discord} name={"discord"} onChange={handleChange} />
+                            {errors.discord && <span className="errorMsg">{errors.discord}</span>}
+                        </div>
                     </div>
                 </div>
 
                 {/* Additional features */}
-                <h6 className="primary-color font-semibold text-3xl mt-3 mb-3">Additional features</h6>
+                <h6 className="primary-color font-semibold text-3xl mt-10 mb-3">Additional features</h6>
                 <hr />
 
-                <ul className="mt-3 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:grid sm:grid-cols-3 sm:grid-rows-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    {addOns.map((add) => (
-                        <li key={add.id} className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                            <div className="flex items-center ps-3">
-                                <input
-                                    id={`${add.id}-option`}
-                                    type="checkbox"
-                                    name="selectedAddOns"
-                                    value={add.id}
-                                    onChange={handleChange}
-                                    checked={formData.selectedAddOns.includes(add.id)}
-                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                />
-                                <label htmlFor={`${add.id}-option`} className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                    {add.label}
-                                </label>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                <div className="border p-4 rounded-xl mb-4 bg-gray-50 dark:bg-gray-800 mt-3">
+                    <ul className="mt-3 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:grid sm:grid-cols-3 sm:grid-rows-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        {addOns.map((add) => (
+                            <li key={add.id} className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div className="flex items-center ps-3">
+                                    <input
+                                        id={`${add.id}-option`}
+                                        type="checkbox"
+                                        name="selectedAddOns"
+                                        value={add.id}
+                                        onChange={handleChange}
+                                        checked={formData.selectedAddOns.includes(add.id)}
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                    />
+                                    <label htmlFor={`${add.id}-option`} className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                        {add.label}
+                                    </label>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
 
-                <div className="grid grid-cols-3 gap-1 mt-5">
-                    {/* <div>
+                    <div className="grid grid-cols-3 gap-1 mt-5">
+                        {/* <div>
                         <div className="flex items-center gap-4">
                             <h6 className="font-semibold mt-3 mb-3 text-white">Select GIF:</h6>
                             <button type="button" onClick={prevGif}
@@ -1016,15 +977,16 @@ const Form = () => {
 
                         </div>
                     </div> */}
-                    <div>
-                        <TextBox icon="gif.png" placeholder="Custom GIF e.g., ...computer.gif" value={formData.gifLink} name={"gifLink"} onChange={handleChange} />
-                    </div>
-                    <div>
-                        <div className="flex" style={{ borderBottom: "2px solid #81fdff" }}>
-                            <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                                <img src={`${process.env.PUBLIC_URL}/icons/description.png`} className="w-10 h-10" />
-                            </span>
-                            <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="quote" value={formData.quote} rows="6" cols="60" placeholder="Developer jokes/Random quotes" onChange={handleChange}></textarea>
+                        <div>
+                            <TextBox icon="gif.png" placeholder="Custom GIF e.g., ...computer.gif" value={formData.gifLink} name={"gifLink"} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <div className="flex" style={{ borderBottom: "2px solid #81fdff" }}>
+                                <span className="inline-flex items-center p-2 text-sm text-gray-900 bg-gray-200 border border-gray-300 border-e-0 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <img src={`${process.env.PUBLIC_URL}/icons/description.png`} className="w-10 h-10" />
+                                </span>
+                                <textarea className="border-class bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="quote" value={formData.quote} rows="6" cols="60" placeholder="Developer jokes/Random quotes" onChange={handleChange}></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>

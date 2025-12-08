@@ -3,7 +3,6 @@ import "./aurora.css"
 const Aurora = () => {
     const storedData = localStorage.getItem("formData");
     const formData = storedData ? JSON.parse(storedData) : {};
-    const extractedWord = "";
 
     return (
         `<div>
@@ -23,7 +22,7 @@ const Aurora = () => {
             <h3 align="left" style="margin-left: 15px; margin-top: 5px">Languages and Tools:</h3>
             <p align="left">  
             ${formData.selectedSkills.map((skill) => (
-            `<img src="https://raw.githubusercontent.com/devicons/devicon/ca28c779441053191ff11710fe24a9e6c23690d6/icons/${skill.split('-')[0]}/${skill}.svg" alt="${skill}" width="40" height="40" style="" />`
+            `<img src="https://raw.githubusercontent.com/devicons/devicon/ca28c779441053191ff11710fe24a9e6c23690d6/icons/${skill.split('-')[0]}/${skill}.svg" alt="${skill}" width="40" height="40" style="" title="${skill}" />`
         )).join('')
         }
             </p>
@@ -102,56 +101,44 @@ const Aurora = () => {
             <div style="margin-left: 15px;">
   ${formData.certifications
             .map((certificate) => `
-    <div style="margin-bottom: 15px;">
-        <div style="display: flex; justify-content: space-between; width: 100%;">
-            <!-- Left Side -->
-            <div>
-                <img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/certification.png?raw=true" alt="certification" height="40" width="40" />
-                <span style="font-weight: bold;">${certificate.name || ""}</span>
-            </div>
-
-            <!-- Right Side -->
                 <div>
-                    <span>${certificate.issueDate || ""}</span>
-                    <span>${certificate.expiryDate ? " - " + certificate.expiryDate : ""}</span>
+                    <img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/certification.png?raw=true" alt="certification" height="40" width="40" />
+                    <span><strong>${certificate.name || ""}</strong></span> <span><strong>${certificate.issuedBy ? "| " + certificate.issuedBy : ""}</strong></span>
+                    <span>${certificate.issueDate ? "| " + certificate.issueDate : ""}</span>
+                    <span>${certificate.expiryDate ? " to " + certificate.expiryDate : ""}</span>
                 </div>
-        </div>
-          
-        <span style="font-weight: bold;">${certificate.issuedBy ? "| " + certificate.issuedBy : ""}</span> <br/>
-        <span style="font-style: italic;">${certificate.skills ? "Skills - " + certificate.skills : ""}</span> <br/>
-        <span>${certificate.description || ""}</span> 
-    </div>
-        `
+            <div><em>${certificate.skills ? "<strong>Skills - </strong>" + certificate.skills : ""}</em></div>
+            <span>${certificate.description || ""}</span>
+            <br /><br />  
+            `
             ).join("")}
-        </div>
+            </div>
 
 
 
             <h3 align="left" style="margin-left: 15px;">Feel free to reach out:</h3>
             <p align="left">
-            ${formData.linkdin ? `<a href="https://linkedin.com/in/${formData.linkdin}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/linkedin.png?raw=true" alt="linkedin" height="40" width="40" /></a>` : ""}
-            ${formData.codepen ? `<a href="https://codepen.com/${formData.codepen}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/codepen.svg?raw=true" alt="codepen" height="40" width="40" /></a>` : ""}
-            ${formData.medium ? `<a href="https://medium.com/@${formData.medium} ? " target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/medium.png?raw=true" alt="medium" height="40" width="40" /></a>` : ""}
-            ${formData.devTo ? `<a href="https://dev.to/${formData.devTo}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/dev.png?raw=true" alt="dev" height="40" width="40" /></a>` : ""}
-            ${formData.codeSandBox ? `<a href="https://codesandbox.io/u/${formData.codeSandBox}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/code-sandbox.svg?raw=true" alt="code-sandbox" height="40" width="40" /></a>` : ""}
-            ${formData.stackOverflow ? `<a href="https://stackOverflow.com/users/32008961/${formData.stackOverflow}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/stackoverflow.png?raw=true" alt="stackoverflow" height="40" width="40" /></a>` : ""}
-            ${formData.leetCode ? `<a href="https://leetCode.com/${formData.leetCode}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/leetcode.svg?raw=true" alt="leetcode" height="40" width="40" /></a>` : ""}
-            ${formData.behance ? `<a href="https://behance.net/${formData.behance}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/behance.png?raw=true" alt="behance" height="40" width="40" /></a>` : ""}
-            ${formData.discord ? `<a href="https://discord.com/${formData.discord}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/discord.png?raw=true" alt="discord" height="40" width="40" /></a>` : ""}
+            ${formData.linkdin ? `<a href="https://linkedin.com/in/${formData.linkdin}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/linkedin.png?raw=true" alt="linkedin" title="linkedin" height="40" width="40" /></a>` : ""}
+            ${formData.codepen ? `<a href="https://codepen.com/${formData.codepen}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/codepen.svg?raw=true" alt="codepen" title="codepen" height="40" width="40" /></a>` : ""}
+            ${formData.medium ? `<a href="https://medium.com/@${formData.medium} ? " target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/medium.png?raw=true" alt="medium" title="medium" height="40" width="40" /></a>` : ""}
+            ${formData.devTo ? `<a href="https://dev.to/${formData.devTo}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/dev.png?raw=true" alt="dev" title="dev to" height="40" width="40" /></a>` : ""}
+            ${formData.leetCode ? `<a href="https://leetCode.com/${formData.leetCode}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/leetcode.svg?raw=true" alt="leetcode" title="leetcode" height="40" width="40" /></a>` : ""}
+            ${formData.behance ? `<a href="https://behance.net/${formData.behance}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/behance.png?raw=true" alt="behance" title="behance" height="40" width="40" /></a>` : ""}
+            ${formData.discord ? `<a href="https://discord.com/${formData.discord}" target="blank"><img align="center" src="https://github.com/SiddhantKadam/Read-Me-Generator/blob/main/public/icons/discord.png?raw=true" alt="discord" title="discord" height="40" width="40" /></a>` : ""}
             </p>
 
             
             <hr />
 
-            ${formData.selectedAddOns.includes("trophy") ? `<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=siddhantkadam" alt="siddhantkadam" /></a> </p> ` : ""}
-
-            <p>
-            <!-- ${formData.selectedAddOns.includes("skills") ? `<img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=${formData.gitHub}&show_icons=true&locale=en&layout=compact" alt="${formData.gitHub}" />` : ""} -->
-
-            <!-- ${formData.selectedAddOns.includes("stats") ? `<img align="center" src="https://github-readme-stats.vercel.app/api?username=${formData.gitHub}&show_icons=true&locale=en" alt="${formData.gitHub}" />` : ""} -->
-
-            ${formData.selectedAddOns.includes("streak") ? `<img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=${formData.gitHub}&" alt="${formData.gitHub}" />` : ""}
-            </p> 
+            ${formData.selectedAddOns.includes("trophy") ? `<img src="https://github-trophies.vercel.app/?username=${formData.gitHub}" alt="trophie's data not found" />` : ""}
+            <br/><br/>
+            <div>
+            ${formData.selectedAddOns.includes("skills") ? `<img align="left" src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=${formData.gitHub}&theme=default" alt="skills's data not found" />` : ""}
+            ${formData.selectedAddOns.includes("stats") ? `<img align="center" src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=${formData.gitHub}&theme=default" alt="summary data not found" />` : ""}
+            </div> 
+            <br/>
+            ${formData.selectedAddOns.includes("streak") ? `<img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=${formData.gitHub}&" alt="streak's data not found" />` : ""}
+            
         </div>`
     )
 }
